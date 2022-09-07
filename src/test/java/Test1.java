@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +18,9 @@ import javax.swing.JPanel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import vavi.awt.image.avif.jna.Avif;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -32,7 +36,7 @@ class Test1 {
         String file = "/kimono.avif";
         InputStream is = Test1.class.getResourceAsStream(file);
         ByteBuffer bb = ByteBuffer.allocateDirect(is.available());
-        System.err.println("size: " + bb.capacity());
+System.err.println("size: " + bb.capacity());
         int l = 0;
         while (l < bb.capacity()) {
             int r = Channels.newChannel(is).read(bb);
@@ -42,10 +46,10 @@ class Test1 {
 
         Avif avif = Avif.getInstance();
         boolean r = avif.isAvifImage(bb, bb.capacity());
-        System.err.println("image is avif: " + r);
+System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
-        System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
+System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
         avif.decode(bb, bb.capacity(), image);
     }
 
@@ -58,7 +62,7 @@ class Test1 {
 //        String file = "/data/io/kodim23_yuv420_8bpc.avif";
         InputStream is = Test1.class.getResourceAsStream(file);
         ByteBuffer bb = ByteBuffer.allocateDirect(is.available());
-        System.err.println("size: " + bb.capacity());
+System.err.println("size: " + bb.capacity());
         int l = 0;
         while (l < bb.capacity()) {
             int r = Channels.newChannel(is).read(bb);
@@ -68,10 +72,10 @@ class Test1 {
 
         Avif avif = Avif.getInstance();
         boolean r = avif.isAvifImage(bb, bb.capacity());
-        System.err.println("image is avif: " + r);
+System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
-        System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
+System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
         show(avif.decode(bb, bb.capacity(), image));
         while (true) Thread.yield();
     }
@@ -95,15 +99,17 @@ class Test1 {
     @Test
     void test00() throws Exception {
         String[] rs = ImageIO.getReaderFormatNames();
-        System.err.println("-- reader --");
-        for (String r : rs) {
-            System.err.println(r);
-        }
-        System.err.println("-- writer --");
+System.err.println("-- reader --");
+for (String r : rs) {
+    System.err.println(r);
+}
+        assertTrue(Arrays.asList(rs).contains("AVIF"));
         String[] ws = ImageIO.getWriterFormatNames();
-        for (String w : ws) {
-            System.err.println(w);
-        }
+System.err.println("-- writer --");
+for (String w : ws) {
+    System.err.println(w);
+}
+        assertFalse(Arrays.asList(ws).contains("AVIF"));
     }
 
     @Test

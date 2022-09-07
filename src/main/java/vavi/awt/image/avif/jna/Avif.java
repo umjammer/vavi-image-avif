@@ -91,8 +91,7 @@ public class Avif {
      * @param encoded The encoded AVIF image. encoded.position() must be 0.
      * @param length  Length of the encoded buffer.
      * @param bitmap  The decoded pixels will be copied into the bitmap.
-     * @return true on success and false on failure. A few possible reasons for failure are: 1) Input
-     * was not valid AVIF. 2) Bitmap was not large enough to store the decoded image.
+     * @return the decoded image.
      */
     public BufferedImage decode(ByteBuffer encoded, int length, BufferedImage bitmap) {
         Pointer buffer = Native.getDirectBufferPointer(encoded);

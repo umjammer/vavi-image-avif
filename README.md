@@ -6,8 +6,15 @@
 
 # vavi-image-avif
 
-Java AVIF decoder
+Java AVIF decoder<br/>
+wrapped libavif by jna<br/>
+based on https://github.com/AOMediaCodec/libavif/tree/main/android_jni
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Avif-logo-rgb.svg" width="256"/>
 
 ## Install
 
-https://jitpack.io/#umjammer/vavi-image-avif
+ * install `libavif` e.g `brew libavif`
+ * https://jitpack.io/#umjammer/vavi-image-avif
+ * add `-Djna.library.path=/usr/local/lib` for jvm args
+
