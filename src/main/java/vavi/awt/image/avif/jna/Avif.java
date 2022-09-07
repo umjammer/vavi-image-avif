@@ -54,7 +54,7 @@ public class Avif {
         Pointer buffer = Native.getDirectBufferPointer(encoded);
         avifDecoder decoder = createDecoderAndParse(buffer, length);
         BufferedImage image = new BufferedImage(decoder.image.width, decoder.image.height, BufferedImage.TYPE_4BYTE_ABGR);
-System.err.println("image depth: " + decoder.image.depth);
+//System.err.println("image depth: " + decoder.image.depth);
         return image;
     }
 
@@ -94,28 +94,25 @@ System.err.println("image depth: " + decoder.image.depth);
      * @return true on success and false on failure. A few possible reasons for failure are: 1) Input
      * was not valid AVIF. 2) Bitmap was not large enough to store the decoded image.
      */
-    public boolean decode(ByteBuffer encoded, int length, BufferedImage bitmap) {
+    public BufferedImage decode(ByteBuffer encoded, int length, BufferedImage bitmap) {
         Pointer buffer = Native.getDirectBufferPointer(encoded);
         avifDecoder decoder = createDecoderAndParse(buffer, length);
         int res = AvifLibrary.INSTANCE.avifDecoderNextImage(decoder);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
-            System.err.printf("Failed to decode AVIF image. Status: %d\n", res);
-            return false;
+            throw new IllegalStateException(String.format("Failed to decode AVIF image. Status: %d", res));
         }
         // Ensure that the bitmap is large enough to store the decoded image.
         if (bitmap.getWidth() < decoder.image.width ||
                 bitmap.getHeight() < decoder.image.height) {
-            System.err.printf(
-                    "Bitmap is not large enough to fit the image. Bitmap %dx%d Image %dx%d.\n",
+            throw new IllegalStateException(String.format(
+                    "Bitmap is not large enough to fit the image. Bitmap %dx%d Image %dx%d.",
                     bitmap.getWidth(), bitmap.getHeight(), decoder.image.width,
-                    decoder.image.height);
-            return false;
+                    decoder.image.height));
         }
         // Ensure that the bitmap format is RGBA_8888, RGB_565 or RGBA_F16.
         if (bitmap.getType() != BufferedImage.TYPE_4BYTE_ABGR &&
                 bitmap.getType() != BufferedImage.TYPE_USHORT_565_RGB) {
-            System.err.printf("Bitmap format (%d) is not supported.\n", bitmap.getType());
-            return false;
+            throw new IllegalStateException(String.format("Bitmap format (%d) is not supported.", bitmap.getType()));
         }
         avifRGBImage rgb_image = new avifRGBImage();
         AvifLibrary.INSTANCE.avifRGBImageSetDefaults(rgb_image, decoder.image);
@@ -130,12 +127,11 @@ System.err.println("image depth: " + decoder.image.depth);
         rgb_image.rowBytes = bitmap.getWidth() * 4;
         res = AvifLibrary.INSTANCE.avifImageYUVToRGB(decoder.image, rgb_image);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
-            System.err.printf("Failed to convert YUV Pixels to RGB. Status: %d\n", res);
-            return false;
+            throw new IllegalStateException(String.format("Failed to convert YUV Pixels to RGB. Status: %d", res));
         }
         ByteBuffer localBuffer = ByteBuffer.allocate(nativeBuffer.capacity());
         localBuffer.put(nativeBuffer);
         bitmap.getRaster().setDataElements(0, 0, bitmap.getWidth(), bitmap.getHeight(), localBuffer.array());
-        return true;
+        return bitmap;
     }
 }

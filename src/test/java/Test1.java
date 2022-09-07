@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -31,7 +32,7 @@ class Test1 {
         String file = "/kimono.avif";
         InputStream is = Test1.class.getResourceAsStream(file);
         ByteBuffer bb = ByteBuffer.allocateDirect(is.available());
-System.err.println("size: " + bb.capacity());
+        System.err.println("size: " + bb.capacity());
         int l = 0;
         while (l < bb.capacity()) {
             int r = Channels.newChannel(is).read(bb);
@@ -41,23 +42,23 @@ System.err.println("size: " + bb.capacity());
 
         Avif avif = Avif.getInstance();
         boolean r = avif.isAvifImage(bb, bb.capacity());
-System.err.println("image is avif: " + r);
+        System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
-System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
+        System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
         avif.decode(bb, bb.capacity(), image);
     }
 
     @Test
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test1() throws Exception {
-        String file = "/kimono.avif";
+//        String file = "/kimono.avif";
 //        String file = "/data/io/cosmos1650_yuv444_10bpc_p3pq.avif";
-//        String file = "/data/io/kodim03_yuv420_8bpc.avif";
+        String file = "/data/io/kodim03_yuv420_8bpc.avif";
 //        String file = "/data/io/kodim23_yuv420_8bpc.avif";
         InputStream is = Test1.class.getResourceAsStream(file);
         ByteBuffer bb = ByteBuffer.allocateDirect(is.available());
-System.err.println("size: " + bb.capacity());
+        System.err.println("size: " + bb.capacity());
         int l = 0;
         while (l < bb.capacity()) {
             int r = Channels.newChannel(is).read(bb);
@@ -67,12 +68,15 @@ System.err.println("size: " + bb.capacity());
 
         Avif avif = Avif.getInstance();
         boolean r = avif.isAvifImage(bb, bb.capacity());
-System.err.println("image is avif: " + r);
+        System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
-System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
-        avif.decode(bb, bb.capacity(), image);
+        System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
+        show(avif.decode(bb, bb.capacity(), image));
+        while (true) Thread.yield();
+    }
 
+    static void show(BufferedImage image) {
         //
         JFrame frame = new JFrame();
         JPanel panel = new JPanel() {
@@ -86,7 +90,29 @@ System.err.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
 
+    @Test
+    void test00() throws Exception {
+        String[] rs = ImageIO.getReaderFormatNames();
+        System.err.println("-- reader --");
+        for (String r : rs) {
+            System.err.println(r);
+        }
+        System.err.println("-- writer --");
+        String[] ws = ImageIO.getWriterFormatNames();
+        for (String w : ws) {
+            System.err.println(w);
+        }
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test2() throws Exception {
+//        String file = "/kimono.avif";
+        String file = "/data/io/kodim03_yuv420_8bpc.avif";
+        InputStream is = Test1.class.getResourceAsStream(file);
+        show(ImageIO.read(is));
         while (true) Thread.yield();
     }
 }
