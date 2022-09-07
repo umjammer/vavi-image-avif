@@ -4,7 +4,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-image-avif</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 
   <name>Java AVIF Decoder</name>
   <scm>
