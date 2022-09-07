@@ -65,6 +65,7 @@
         <configuration>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+            -Djna.library.path=/usr/local/lib
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
