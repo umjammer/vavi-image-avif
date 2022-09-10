@@ -7,6 +7,7 @@
 package vavi.imageio.avif;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -77,14 +78,17 @@ long t = System.currentTimeMillis();
         InputStream stream = new WrappedImageInputStream((ImageInputStream) input);
 
         try {
-            ByteBuffer bb = ByteBuffer.allocateDirect(Integer.MAX_VALUE);
-            int l = 0;
-            while (l < bb.capacity()) {
-                int r = Channels.newChannel(stream).read(bb);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] b = new byte[8192];
+            while (true) {
+                int r = stream.read(b, 0, b.length);
                 if (r < 0) break;
-                l += r;
+                baos.write(b, 0, r);
             }
+            int l = baos.size();
 Debug.println(Level.FINE, "size: " + l);
+            ByteBuffer bb = ByteBuffer.allocateDirect(l);
+            bb.put(baos.toByteArray(), 0, l);
 
             Avif avif = Avif.getInstance();
 
