@@ -7,6 +7,7 @@
 package vavi.imageio.avif;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -87,15 +88,19 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
 Debug.println(Level.FINE, "input: " + obj);
         if (obj instanceof ImageInputStream) {
             InputStream stream = new BufferedInputStream(new WrappedImageInputStream((ImageInputStream) obj));
-            stream.mark(stream.available()); // TODO available is integer.max
-            // we currently accept heif only
-            ByteBuffer bb = ByteBuffer.allocateDirect(stream.available()); // TODO available is integer.max
-            int l = 0;
-            while (l < bb.capacity()) {
-                int r = Channels.newChannel(stream).read(bb);
+Debug.println(Level.FINE, "stream.available(): " + stream.available());
+            stream.mark(stream.available());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] b = new byte[8192];
+            while (true) {
+                int r = stream.read(b, 0, b.length);
                 if (r < 0) break;
-                l += r;
+                baos.write(b, 0, r);
             }
+            int l = baos.size();
+Debug.println(Level.FINE, "size: " + l);
+            ByteBuffer bb = ByteBuffer.allocateDirect(l);
+            bb.put(baos.toByteArray(), 0, l);
             stream.reset();
             Avif avif = Avif.getInstance();
             return avif.isAvifImage(bb, l);
