@@ -18,3 +18,8 @@ based on https://github.com/AOMediaCodec/libavif/tree/main/android_jni
  * https://jitpack.io/#umjammer/vavi-image-avif
  * add `-Djna.library.path=/usr/local/lib` for jvm args
 
+## Usage
+
+```java
+    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.avif").toFile());
+```

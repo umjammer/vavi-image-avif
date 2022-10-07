@@ -4,7 +4,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-image-avif</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3-SNAPSHOT</version>
 
   <name>Java AVIF Decoder</name>
   <scm>
@@ -22,7 +22,8 @@
 
   <profiles>
     <profile>
-      <id>jnarator</id>
+      <!-- mvn -P jnaerator jnaerator:generate -->
+      <id>jnaerator</id>
       <build>
         <plugins>
           <plugin>
