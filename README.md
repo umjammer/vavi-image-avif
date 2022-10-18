@@ -21,5 +21,5 @@ based on https://github.com/AOMediaCodec/libavif/tree/main/android_jni
 ## Usage
 
 ```java
-    BufferedImage image = ImageIO.read(Paths.get("/foo/baa.avif").toFile());
+    BufferedImage image = ImageIO.read(Paths.get("/foo/bar.avif").toFile());
 ```
