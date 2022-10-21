@@ -62,8 +62,9 @@ public class avifCodecConfigurationBox extends Structure {
 	}
 	public static class ByReference extends avifCodecConfigurationBox implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifCodecConfigurationBox implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifCodecConfigurationBox implements Structure.ByValue {
 		
-	};
+	}
 }

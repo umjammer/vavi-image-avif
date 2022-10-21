@@ -28,8 +28,9 @@ public class avifIOStats extends Structure {
 	}
 	public static class ByReference extends avifIOStats implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifIOStats implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifIOStats implements Structure.ByValue {
 		
-	};
+	}
 }

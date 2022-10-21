@@ -36,8 +36,8 @@ public class Avif {
      * @param encoded The encoded image. buffer.position() must be 0.
      * @return true if the bytes seem like an AVIF image, false otherwise.
      */
-    public boolean isAvifImage(ByteBuffer encoded, int length) {
-        final avifROData data = new avifROData();
+    public static boolean isAvifImage(ByteBuffer encoded, int length) {
+        avifROData data = new avifROData();
         data.data = Native.getDirectBufferPointer(encoded);
         data.size = length;
         return AvifLibrary.INSTANCE.avifPeekCompatibleFileType(data) == AvifLibrary.AVIF_TRUE;
@@ -58,7 +58,7 @@ public class Avif {
         return image;
     }
 
-    private avifDecoder createDecoderAndParse(final Pointer buffer, int length) {
+    private avifDecoder createDecoderAndParse(Pointer buffer, int length) {
         avifDecoder decoder = AvifLibrary.INSTANCE.avifDecoderCreate();
         if (decoder == null) {
             throw new IllegalStateException("Failed to create AVIF Decoder.");

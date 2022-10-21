@@ -11,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,7 @@ public class AvifImageReader extends ImageReader {
     }
 
     /** */
-    private void checkIndex(int imageIndex) {
+    private static void checkIndex(int imageIndex) {
         if (imageIndex != 0) {
             throw new IndexOutOfBoundsException("bad index");
         }

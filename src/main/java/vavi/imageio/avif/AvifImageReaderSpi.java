@@ -6,12 +6,9 @@
 
 package vavi.imageio.avif;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.imageio.ImageReader;
@@ -19,7 +16,6 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import vavi.awt.image.avif.jna.Avif;
-import vavi.imageio.WrappedImageInputStream;
 import vavi.util.Debug;
 
 
@@ -102,7 +98,7 @@ Debug.println(Level.FINE, "size: " + l);
             bb.put(baos.toByteArray(), 0, l);
             stream.reset();
             Avif avif = Avif.getInstance();
-            return avif.isAvifImage(bb, l);
+            return Avif.isAvifImage(bb, l);
         } else {
             return false;
         }

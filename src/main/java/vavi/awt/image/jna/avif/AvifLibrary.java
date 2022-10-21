@@ -32,7 +32,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_PLANES_A = (1 << 1);
 		/** <i>native declaration : avif/avif.h:85</i> */
 		int AVIF_PLANES_ALL = 0xff;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h:89</i><br>
 	 * enum values
@@ -50,7 +51,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_CHAN_U = 1;
 		/** <i>native declaration : avif/avif.h:99</i> */
 		int AVIF_CHAN_V = 2;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -226,7 +228,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_TRANSFORM_IROT = (1 << 2);
 		/** <i>native declaration : avif/avif.h:320</i> */
 		int AVIF_TRANSFORM_IMIR = (1 << 3);
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -247,7 +250,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_RGB_FORMAT_BGRA = 4;
 		/** <i>native declaration : avif/avif.h:538</i> */
 		int AVIF_RGB_FORMAT_ABGR = 5;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -278,7 +282,8 @@ public interface AvifLibrary extends Library {
 		 * <i>native declaration : avif/avif.h:549</i>
 		 */
 		int AVIF_CHROMA_UPSAMPLING_BILINEAR = 4;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -308,7 +313,8 @@ public interface AvifLibrary extends Library {
 		 * <i>native declaration : avif/avif.h:607</i>
 		 */
 		int AVIF_CODEC_CHOICE_SVT = 5;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -318,7 +324,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_CODEC_FLAG_CAN_DECODE = (1 << 0);
 		/** <i>native declaration : avif/avif.h:613</i> */
 		int AVIF_CODEC_FLAG_CAN_ENCODE = (1 << 1);
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -333,8 +340,9 @@ public interface AvifLibrary extends Library {
 		/** <i>native declaration : avif/avif.h:731</i> */
 		int AVIF_STRICT_ALPHA_ISPE_REQUIRED = (1 << 2);
 		/** <i>native declaration : avif/avif.h:734</i> */
-		int AVIF_STRICT_ENABLED = (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_PIXI_REQUIRED | (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_CLAP_VALID | (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_ALPHA_ISPE_REQUIRED;
-	};
+		int AVIF_STRICT_ENABLED = avifStrictFlag.AVIF_STRICT_PIXI_REQUIRED | avifStrictFlag.AVIF_STRICT_CLAP_VALID | avifStrictFlag.AVIF_STRICT_ALPHA_ISPE_REQUIRED;
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -346,7 +354,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_DECODER_SOURCE_PRIMARY_ITEM = 1;
 		/** <i>native declaration : avif/avif.h:760</i> */
 		int AVIF_DECODER_SOURCE_TRACKS = 2;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -358,7 +367,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_PROGRESSIVE_STATE_AVAILABLE = 1;
 		/** <i>native declaration : avif/avif.h:792</i> */
 		int AVIF_PROGRESSIVE_STATE_ACTIVE = 2;
-	};
+	}
+
 	/**
 	 * <i>native declaration : avif/avif.h</i><br>
 	 * enum values
@@ -370,7 +380,8 @@ public interface AvifLibrary extends Library {
 		int AVIF_ADD_IMAGE_FLAG_FORCE_KEYFRAME = (1 << 0);
 		/** <i>native declaration : avif/avif.h:1045</i> */
 		int AVIF_ADD_IMAGE_FLAG_SINGLE = (1 << 1);
-	};
+	}
+
 	/** <i>native declaration : avif/avif.h</i> */
 	int AVIF_VERSION_MAJOR = 0;
 	/** <i>native declaration : avif/avif.h</i> */
@@ -406,15 +417,15 @@ public interface AvifLibrary extends Library {
 	/** <i>native declaration : avif/avif.h</i> */
 	int AVIF_SPEED_FASTEST = 10;
 	/** <i>native declaration : avif/avif.h</i> */
-	public interface avifIODestroyFunc extends Callback {
+	interface avifIODestroyFunc extends Callback {
 		void apply(avifIO io);
 	}
 	/** <i>native declaration : avif/avif.h</i> */
-	public interface avifIOReadFunc extends Callback {
+	interface avifIOReadFunc extends Callback {
 		int apply(avifIO io, int readFlags, long offset, int size, avifROData out);
 	}
 	/** <i>native declaration : avif/avif.h</i> */
-	public interface avifIOWriteFunc extends Callback {
+	interface avifIOWriteFunc extends Callback {
 		int apply(avifIO io, int writeFlags, long offset, Pointer data, int size);
 	}
 	/**
@@ -474,7 +485,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>void avifRWDataSet(avifRWData*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:174</i>
 	 */
-	void avifRWDataSet(avifRWData raw, byte data[], int len);
+	void avifRWDataSet(avifRWData raw, byte[] data, int len);
 	/**
 	 * Original signature : <code>void avifRWDataFree(avifRWData*)</code><br>
 	 * <i>native declaration : avif/avif.h:175</i>
@@ -515,7 +526,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>avifColorPrimaries avifColorPrimariesFind(const float[8], const char**)</code><br>
 	 * <i>native declaration : avif/avif.h:246</i>
 	 */
-	short avifColorPrimariesFind(float inPrimaries[], String outName[]);
+	short avifColorPrimariesFind(float[] inPrimaries, String[] outName);
 	/**
 	 * Original signature : <code>void avifDiagnosticsClearError(avifDiagnostics*)</code><br>
 	 * <i>native declaration : avif/avif.h:308</i>
@@ -571,7 +582,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>void avifImageSetProfileICC(avifImage*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:470</i>
 	 */
-	void avifImageSetProfileICC(avifImage image, byte icc[], int iccSize);
+	void avifImageSetProfileICC(avifImage image, byte[] icc, int iccSize);
 	/**
 	 * Warning: If the Exif payload is set and invalid, avifEncoderWrite() may return AVIF_RESULT_INVALID_EXIF_PAYLOAD<br>
 	 * Original signature : <code>void avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
@@ -585,7 +596,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>void avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:473</i>
 	 */
-	void avifImageSetMetadataExif(avifImage image, byte exif[], int exifSize);
+	void avifImageSetMetadataExif(avifImage image, byte[] exif, int exifSize);
 	/**
 	 * Original signature : <code>void avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:474</i><br>
@@ -597,7 +608,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>void avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:474</i>
 	 */
-	void avifImageSetMetadataXMP(avifImage image, byte xmp[], int xmpSize);
+	void avifImageSetMetadataXMP(avifImage image, byte[] xmp, int xmpSize);
 	/**
 	 * Ignores any pre-existing planes<br>
 	 * Original signature : <code>void avifImageAllocatePlanes(avifImage*, avifPlanesFlags)</code><br>
@@ -719,7 +730,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>avifIO* avifIOCreateMemoryReader(const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:698</i>
 	 */
-	avifIO avifIOCreateMemoryReader(byte data[], int size);
+	avifIO avifIOCreateMemoryReader(byte[] data, int size);
 	/**
 	 * Original signature : <code>avifIO* avifIOCreateFileReader(const char*)</code><br>
 	 * <i>native declaration : avif/avif.h:699</i><br>
@@ -770,7 +781,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>avifResult avifDecoderReadMemory(avifDecoder*, avifImage*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:901</i>
 	 */
-	int avifDecoderReadMemory(avifDecoder decoder, avifImage image, byte data[], int size);
+	int avifDecoderReadMemory(avifDecoder decoder, avifImage image, byte[] data, int size);
 	/**
 	 * Original signature : <code>avifResult avifDecoderReadFile(avifDecoder*, avifImage*, const char*)</code><br>
 	 * <i>native declaration : avif/avif.h:902</i><br>
@@ -806,7 +817,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>avifResult avifDecoderSetIOMemory(avifDecoder*, const uint8_t*, size_t)</code><br>
 	 * <i>native declaration : avif/avif.h:932</i>
 	 */
-	int avifDecoderSetIOMemory(avifDecoder decoder, byte data[], int size);
+	int avifDecoderSetIOMemory(avifDecoder decoder, byte[] data, int size);
 	/**
 	 * Original signature : <code>avifResult avifDecoderSetIOFile(avifDecoder*, const char*)</code><br>
 	 * <i>native declaration : avif/avif.h:933</i><br>
@@ -899,7 +910,7 @@ public interface AvifLibrary extends Library {
 	 * Original signature : <code>avifResult avifEncoderAddImageGrid(avifEncoder*, uint32_t, uint32_t, const const avifImage**, avifAddImageFlags)</code><br>
 	 * <i>native declaration : avif/avif.h:1062</i>
 	 */
-	int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, avifImage.ByReference cellImages[], int addImageFlags);
+	int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, avifImage.ByReference[] cellImages, int addImageFlags);
 	/**
 	 * Original signature : <code>avifResult avifEncoderFinish(avifEncoder*, avifRWData*)</code><br>
 	 * <i>native declaration : avif/avif.h:1067</i>

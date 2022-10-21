@@ -45,7 +45,7 @@ System.err.println("size: " + bb.capacity());
         }
 
         Avif avif = Avif.getInstance();
-        boolean r = avif.isAvifImage(bb, bb.capacity());
+        boolean r = Avif.isAvifImage(bb, bb.capacity());
 System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
@@ -71,7 +71,7 @@ System.err.println("size: " + bb.capacity());
         }
 
         Avif avif = Avif.getInstance();
-        boolean r = avif.isAvifImage(bb, bb.capacity());
+        boolean r = Avif.isAvifImage(bb, bb.capacity());
 System.err.println("image is avif: " + r);
 
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());

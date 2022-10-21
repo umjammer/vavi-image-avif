@@ -30,8 +30,9 @@ public class avifRWData extends Structure {
 	}
 	public static class ByReference extends avifRWData implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifRWData implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifRWData implements Structure.ByValue {
 		
-	};
+	}
 }

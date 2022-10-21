@@ -32,8 +32,9 @@ public class avifPixelFormatInfo extends Structure {
 	}
 	public static class ByReference extends avifPixelFormatInfo implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifPixelFormatInfo implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifPixelFormatInfo implements Structure.ByValue {
 		
-	};
+	}
 }

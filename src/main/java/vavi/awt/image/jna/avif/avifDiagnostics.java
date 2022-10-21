@@ -2,7 +2,7 @@ package vavi.awt.image.jna.avif;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.List;
 
