@@ -31,6 +31,17 @@ public class avifRGBImage extends Structure {
 	 */
 	public int chromaUpsampling;
 	/**
+	 * @see AvifLibrary.avifChromaDownsampling
+	 * How to downsample to 4:2:0 or 4:2:2 UV when converting from RGB (ignored for 4:4:4 and 4:0:0).
+	 * Ignored when converting to RGB. Defaults to AVIF_CHROMA_DOWNSAMPLING_AUTOMATIC.
+	 */
+	public int chromaDownsampling;
+	/**
+	 * If AVIF_FALSE and libyuv conversion between RGB and YUV (including upsampling or downsampling if any)
+	 * is available for the avifImage/avifRGBImage combination, then libyuv is used. Default is AVIF_FALSE.
+	 */
+	public int avoidLibYUV;
+	/**
 	 * Used for XRGB formats, treats formats containing alpha (such as ARGB) as if they were<br>
 	 * C type : avifBool
 	 */
@@ -52,7 +63,7 @@ public class avifRGBImage extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "ignoreAlpha", "alphaPremultiplied", "isFloat", "pixels", "rowBytes");
+		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "pixels", "rowBytes");
 	}
 	public avifRGBImage(Pointer peer) {
 		super(peer);

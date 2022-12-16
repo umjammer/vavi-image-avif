@@ -33,6 +33,10 @@ public class avifDecoder extends Structure {
 	/** C type : avifBool */
 	public int ignoreXMP;
 	public int imageSizeLimit;
+	// This represents the maximum dimension of an image (width or height) that libavif should
+	// attempt to decode. It defaults to AVIF_DEFAULT_IMAGE_DIMENSION_LIMIT. Set it to 0 to ignore
+	// the limit.
+	public int imageDimensionLimit;
 	public int imageCountLimit;
 	/** C type : avifStrictFlags */
 	public int strictFlags;
@@ -70,7 +74,7 @@ public class avifDecoder extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "alphaPresent", "ioStats", "diag", "io", "data");
+		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "alphaPresent", "ioStats", "diag", "io", "data");
 	}
 	public avifDecoder(Pointer peer) {
 		super(peer);

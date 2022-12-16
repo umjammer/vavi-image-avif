@@ -37,11 +37,6 @@ public class avifImage extends Structure {
 	public int[] yuvRowBytes = new int[3];
 	/** C type : avifBool */
 	public int imageOwnsYUVPlanes;
-	/**
-	 * @see AvifLibrary.avifRange
-	 * C type : avifRange
-	 */
-	public int alphaRange;
 	/** C type : uint8_t* */
 	public Pointer alphaPlane;
 	public int alphaRowBytes;
@@ -75,7 +70,7 @@ public class avifImage extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaRange", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp");
+		return Arrays.asList("width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp");
 	}
 	public avifImage(Pointer peer) {
 		super(peer);
