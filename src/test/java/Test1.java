@@ -6,6 +6,8 @@
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,7 @@ import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -100,23 +103,26 @@ Debug.println("image is avif: " + r);
         BufferedImage image = avif.getCompatibleImage(bb, bb.capacity());
 Debug.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
         show(avif.decode(bb, bb.capacity(), image));
-        while (true) Thread.yield();
     }
 
-    /** gui */
-    static void show(BufferedImage image) {
+    /** using cdl cause junit stops awt thread suddenly */
+    static void show(BufferedImage image) throws Exception {
+        CountDownLatch cdl = new CountDownLatch(1);
         JFrame frame = new JFrame();
+        frame.addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) { cdl.countDown(); }
+        });
         JPanel panel = new JPanel() {
-            public void paint(Graphics g) {
+            public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
             }
         };
         panel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         frame.setContentPane(panel);
         frame.setTitle("AVIF");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        cdl.await();
     }
 
     @Test
@@ -159,6 +165,5 @@ for (String w : ws) {
     void test2() throws Exception {
         InputStream is = Files.newInputStream(Paths.get(file));
         show(ImageIO.read(is));
-        while (true) Thread.yield();
     }
 }
