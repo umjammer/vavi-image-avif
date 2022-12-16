@@ -28,8 +28,9 @@ public class avifPixelAspectRatioBox extends Structure {
 	}
 	public static class ByReference extends avifPixelAspectRatioBox implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifPixelAspectRatioBox implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifPixelAspectRatioBox implements Structure.ByValue {
 		
-	};
+	}
 }

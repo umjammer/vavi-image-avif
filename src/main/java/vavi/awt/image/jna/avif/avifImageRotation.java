@@ -2,6 +2,7 @@ package vavi.awt.image.jna.avif;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 /**
  * <i>native declaration : avif/avif.h</i><br>
@@ -16,7 +17,7 @@ public class avifImageRotation extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("angle");
+		return Collections.singletonList("angle");
 	}
 	/** @param angle legal values: [0-3] */
 	public avifImageRotation(byte angle) {
@@ -28,8 +29,9 @@ public class avifImageRotation extends Structure {
 	}
 	public static class ByReference extends avifImageRotation implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifImageRotation implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifImageRotation implements Structure.ByValue {
 		
-	};
+	}
 }

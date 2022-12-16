@@ -40,8 +40,9 @@ public class avifCleanApertureBox extends Structure {
 	}
 	public static class ByReference extends avifCleanApertureBox implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifCleanApertureBox implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifCleanApertureBox implements Structure.ByValue {
 		
-	};
+	}
 }

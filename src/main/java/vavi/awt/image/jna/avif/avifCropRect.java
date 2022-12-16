@@ -32,8 +32,9 @@ public class avifCropRect extends Structure {
 	}
 	public static class ByReference extends avifCropRect implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifCropRect implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifCropRect implements Structure.ByValue {
 		
-	};
+	}
 }

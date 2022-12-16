@@ -5,6 +5,7 @@ package vavi.awt.image.avif.jna;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
+import java.util.logging.Level;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -12,6 +13,7 @@ import vavi.awt.image.jna.avif.AvifLibrary;
 import vavi.awt.image.jna.avif.avifDecoder;
 import vavi.awt.image.jna.avif.avifRGBImage;
 import vavi.awt.image.jna.avif.avifROData;
+import vavi.util.Debug;
 
 
 /**
@@ -24,7 +26,12 @@ public class Avif {
     private static final Avif avif = new Avif();
 
     // This is a utility class and cannot be instantiated.
-    private Avif() {}
+    private Avif() {
+        String version = AvifLibrary.INSTANCE.avifVersion();
+        if (!version.startsWith("0.11")) {
+Debug.println(Level.SEVERE, "wrong version: " + version);
+        }
+    }
 
     public static Avif getInstance() {
         return avif;
@@ -36,8 +43,8 @@ public class Avif {
      * @param encoded The encoded image. buffer.position() must be 0.
      * @return true if the bytes seem like an AVIF image, false otherwise.
      */
-    public boolean isAvifImage(ByteBuffer encoded, int length) {
-        final avifROData data = new avifROData();
+    public static boolean isAvifImage(ByteBuffer encoded, int length) {
+        avifROData data = new avifROData();
         data.data = Native.getDirectBufferPointer(encoded);
         data.size = length;
         return AvifLibrary.INSTANCE.avifPeekCompatibleFileType(data) == AvifLibrary.AVIF_TRUE;
@@ -52,17 +59,18 @@ public class Avif {
      */
     public BufferedImage getCompatibleImage(ByteBuffer encoded, int length) {
         Pointer buffer = Native.getDirectBufferPointer(encoded);
-        avifDecoder decoder = createDecoderAndParse(buffer, length);
+        avifDecoder decoder = createDecoderAndParse(buffer, length, Runtime.getRuntime().availableProcessors());
         BufferedImage image = new BufferedImage(decoder.image.width, decoder.image.height, BufferedImage.TYPE_4BYTE_ABGR);
 //System.err.println("image depth: " + decoder.image.depth);
         return image;
     }
 
-    private avifDecoder createDecoderAndParse(final Pointer buffer, int length) {
+    private avifDecoder createDecoderAndParse(Pointer buffer, int length, int threads) {
         avifDecoder decoder = AvifLibrary.INSTANCE.avifDecoderCreate();
         if (decoder == null) {
             throw new IllegalStateException("Failed to create AVIF Decoder.");
         }
+        decoder.maxThreads = threads;
         decoder.ignoreXMP = AvifLibrary.AVIF_TRUE;
         decoder.ignoreExif = AvifLibrary.AVIF_TRUE;
 
@@ -95,7 +103,7 @@ public class Avif {
      */
     public BufferedImage decode(ByteBuffer encoded, int length, BufferedImage bitmap) {
         Pointer buffer = Native.getDirectBufferPointer(encoded);
-        avifDecoder decoder = createDecoderAndParse(buffer, length);
+        avifDecoder decoder = createDecoderAndParse(buffer, length, Runtime.getRuntime().availableProcessors());
         int res = AvifLibrary.INSTANCE.avifDecoderNextImage(decoder);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
             throw new IllegalStateException(String.format("Failed to decode AVIF image. Status: %d", res));

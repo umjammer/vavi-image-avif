@@ -51,8 +51,9 @@ public class avifIO extends Structure {
 	}
 	public static class ByReference extends avifIO implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifIO implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifIO implements Structure.ByValue {
 		
-	};
+	}
 }

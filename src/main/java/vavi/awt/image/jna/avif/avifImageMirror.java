@@ -2,6 +2,7 @@ package vavi.awt.image.jna.avif;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 /**
  * <i>native declaration : avif/avif.h</i><br>
@@ -15,7 +16,7 @@ public class avifImageMirror extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("mode");
+		return Collections.singletonList("mode");
 	}
 	public avifImageMirror(byte mode) {
 		super();
@@ -26,8 +27,9 @@ public class avifImageMirror extends Structure {
 	}
 	public static class ByReference extends avifImageMirror implements Structure.ByReference {
 		
-	};
-	public static class ByValue extends avifImageMirror implements Structure.ByValue {
+	}
+
+    public static class ByValue extends avifImageMirror implements Structure.ByValue {
 		
-	};
+	}
 }
