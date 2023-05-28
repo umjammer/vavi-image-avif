@@ -23,3 +23,7 @@ based on https://github.com/AOMediaCodec/libavif/tree/main/android_jni
 ```java
     BufferedImage image = ImageIO.read(Paths.get("/foo/bar.avif").toFile());
 ```
+
+## TODO
+
+ * ~~writer~~

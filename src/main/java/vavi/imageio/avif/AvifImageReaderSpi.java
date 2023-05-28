@@ -40,7 +40,7 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
     private static final String[] mimeTypes = {
         "image/avif"
     };
-    static final String[] WriterSpiNames = {};
+    static final String[] WriterSpiNames = { "vavi.imageio.avif.AvifImageWriter" };
     private static final boolean SupportsStandardStreamMetadataFormat = false;
     private static final String NativeStreamMetadataFormatName = null;
     private static final String NativeStreamMetadataFormatClassName = null;

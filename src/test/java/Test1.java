@@ -38,7 +38,6 @@ import vavi.util.Debug;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -143,12 +142,13 @@ for (String r : rs) {
     System.err.println(r);
 }
         assertTrue(Arrays.asList(rs).contains("AVIF"));
+
         String[] ws = ImageIO.getWriterFormatNames();
 System.err.println("-- writer --");
 for (String w : ws) {
     System.err.println(w);
 }
-        assertFalse(Arrays.asList(ws).contains("AVIF"));
+        assertTrue(Arrays.asList(ws).contains("AVIF"));
     }
 
     @Test
@@ -193,5 +193,42 @@ for (String w : ws) {
                 }
             });
         }
+    }
+
+    @Test
+    @DisplayName("encode directly")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test4() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        ByteBuffer bb = Avif.getInstance().encode(image, 60);
+        Path p = Paths.get("tmp/test4.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ByteBuffer b2 = ByteBuffer.allocate(bb.capacity());
+        b2.put(bb);
+        Files.write(p, b2.array());
+        BufferedImage avif = ImageIO.read(Files.newInputStream(p));
+        show(avif);
+    }
+
+    @Test
+    @DisplayName("encode spi")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test5() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        Path p = Paths.get("tmp/test5.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ImageIO.write(image, "avif", p.toFile());
+        BufferedImage avif = ImageIO.read(Files.newInputStream(p));
+        show(avif);
+    }
+
+    @Test
+    @DisplayName("encode spi")
+    void test6() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        Path p = Paths.get("tmp/test6.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ImageIO.write(image, "avif", p.toFile());
+        ImageIO.read(Files.newInputStream(p));
     }
 }
