@@ -8,6 +8,6 @@
 //-o "$(DIR)/../java" // overwrite versioned files instead of writing to target/generated-sources/java
 
 //-v
-//-choicesOut "$(DIR)/rococoa.choices"
+//-choicesOut "$(DIR)/avif.choices"
 
 /usr/local/include/avif/avif.h

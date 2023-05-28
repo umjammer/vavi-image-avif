@@ -4,7 +4,7 @@
 
   <groupId>vavi</groupId>
   <artifactId>vavi-image-avif</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 
   <name>Java AVIF Decoder</name>
   <scm>
@@ -79,7 +79,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.9.1</version>
+        <version>5.9.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -97,12 +97,12 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.1.8</version>
+      <version>1.1.9</version>
     </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-image</artifactId>
-      <version>1.0.10</version>
+      <version>1.0.11</version>
     </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>

@@ -11,12 +11,18 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -32,7 +38,6 @@ import vavi.util.Debug;
 import vavi.util.properties.annotation.Property;
 import vavi.util.properties.annotation.PropsEntity;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,6 +57,9 @@ class Test1 {
 
     @Property(name = "file")
     String file = "src/test/resources/kimono.avif";
+
+    @Property(name = "zip")
+    String zip;
 
     @BeforeEach
     void setup() throws IOException {
@@ -134,12 +142,13 @@ for (String r : rs) {
     System.err.println(r);
 }
         assertTrue(Arrays.asList(rs).contains("AVIF"));
+
         String[] ws = ImageIO.getWriterFormatNames();
 System.err.println("-- writer --");
 for (String w : ws) {
     System.err.println(w);
 }
-        assertFalse(Arrays.asList(ws).contains("AVIF"));
+        assertTrue(Arrays.asList(ws).contains("AVIF"));
     }
 
     @Test
@@ -165,5 +174,61 @@ for (String w : ws) {
     void test2() throws Exception {
         InputStream is = Files.newInputStream(Paths.get(file));
         show(ImageIO.read(is));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test3() throws Exception {
+        Path p = Paths.get(zip);
+        try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + p.toUri()), Collections.emptyMap());
+             Stream<Path> files = Files.walk(fs.getRootDirectories().iterator().next())) {
+            files.forEach(f -> {
+                if (!Files.isDirectory(f) && f.getFileName().toString().endsWith(".avif")) {
+                    try {
+                        ImageIO.read(Files.newInputStream(f));
+                        System.err.println("OK: " + f);
+                    } catch (IOException e) {
+                        System.err.println("ERROR: " + f + ", " + e.getMessage());
+                    }
+                }
+            });
+        }
+    }
+
+    @Test
+    @DisplayName("encode directly")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test4() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        ByteBuffer bb = Avif.getInstance().encode(image, 60);
+        Path p = Paths.get("tmp/test4.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ByteBuffer b2 = ByteBuffer.allocate(bb.capacity());
+        b2.put(bb);
+        Files.write(p, b2.array());
+        BufferedImage avif = ImageIO.read(Files.newInputStream(p));
+        show(avif);
+    }
+
+    @Test
+    @DisplayName("encode spi")
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test5() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        Path p = Paths.get("tmp/test5.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ImageIO.write(image, "avif", p.toFile());
+        BufferedImage avif = ImageIO.read(Files.newInputStream(p));
+        show(avif);
+    }
+
+    @Test
+    @DisplayName("encode spi")
+    void test6() throws Exception {
+        BufferedImage image = ImageIO.read(Files.newInputStream(Paths.get(file)));
+        Path p = Paths.get("tmp/test6.avif");
+        if (!Files.exists(p.getParent())) Files.createDirectories(p.getParent());
+        ImageIO.write(image, "avif", p.toFile());
+        ImageIO.read(Files.newInputStream(p));
     }
 }

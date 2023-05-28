@@ -56,6 +56,12 @@ public class avifRGBImage extends Structure {
 	 * C type : avifBool
 	 */
 	public int isFloat;
+	/**
+	 * Number of threads to be used for the YUV to RGB conversion. Note that this value is ignored for RGB to YUV
+	 * conversion. Setting this to zero has the same effect as setting it to one. Negative values are invalid.
+	 * Default: 1.
+	 */
+//	public int maxThreads;
 	/** C type : uint8_t* */
 	public Pointer pixels;
 	public int rowBytes;
@@ -63,7 +69,7 @@ public class avifRGBImage extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "pixels", "rowBytes");
+		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", /*"maxThreads", */"pixels", "rowBytes");
 	}
 	public avifRGBImage(Pointer peer) {
 		super(peer);

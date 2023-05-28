@@ -28,7 +28,7 @@ import vavi.util.Debug;
 public class AvifImageReaderSpi extends ImageReaderSpi {
 
     private static final String VendorName = "https://github.com/umjammer/vavi-image-avif";
-    private static final String Version = "0.0.1";
+    private static final String Version = "0.0.4";
     private static final String ReaderClassName =
         "vavi.imageio.avif.AvifImageReader";
     private static final String[] Names = {
@@ -40,7 +40,7 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
     private static final String[] mimeTypes = {
         "image/avif"
     };
-    static final String[] WriterSpiNames = {};
+    static final String[] WriterSpiNames = { "vavi.imageio.avif.AvifImageWriter" };
     private static final boolean SupportsStandardStreamMetadataFormat = false;
     private static final String NativeStreamMetadataFormatName = null;
     private static final String NativeStreamMetadataFormatClassName = null;
@@ -76,7 +76,7 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
 
     @Override
     public String getDescription(Locale locale) {
-        return "AVIF Image";
+        return "AVIF Image decoder via libavif";
     }
 
     @Override
@@ -97,7 +97,6 @@ Debug.println(Level.FINE, "size: " + l);
             ByteBuffer bb = ByteBuffer.allocateDirect(l);
             bb.put(baos.toByteArray(), 0, l);
             stream.reset();
-            Avif avif = Avif.getInstance();
             return Avif.isAvifImage(bb, l);
         } else {
             return false;
@@ -105,7 +104,7 @@ Debug.println(Level.FINE, "size: " + l);
     }
 
     @Override
-    public ImageReader createReaderInstance(Object obj) {
+    public ImageReader createReaderInstance(Object extension) {
         return new AvifImageReader(this);
     }
 }

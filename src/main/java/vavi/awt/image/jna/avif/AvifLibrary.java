@@ -994,4 +994,9 @@ public interface AvifLibrary extends Library {
             super();
         }
     }
+    int AVIF_PLANES_ALL = 0xff;
+    int AVIF_QUALITY_DEFAULT = -1;
+    int AVIF_QUALITY_LOSSLESS = 100;
+    int AVIF_QUALITY_WORST = 0;
+    int AVIF_QUALITY_BEST = 100;
 }
