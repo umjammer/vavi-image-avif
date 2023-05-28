@@ -25,7 +25,18 @@ public class avifEncoder extends Structure {
 	public int keyframeInterval;
 	/** timescale of the media (Hz) */
 	public long timescale;
+	/**
+	 * Number of times the image sequence should be repeated. This can also be set to
+	 * AVIF_REPETITION_COUNT_INFINITE for infinite repetitions.  Only applicable for image sequences.
+	 * Essentially, if repetitionCount is a non-negative integer `n`, then the image sequence should be
+	 * played back `n + 1` times. Defaults to AVIF_REPETITION_COUNT_INFINITE.
+	 */
+//	public int repetitionCount;
+	/** EXPERIMENTAL: Non-zero value encodes layered image. */
+//	public int extraLayerCount;
 	// changeable encoder settings
+//	public int quality;
+//	public int qualityAlpha;
 	public int minQuantizer;
 	public int maxQuantizer;
 	public int minQuantizerAlpha;
@@ -33,6 +44,7 @@ public class avifEncoder extends Structure {
 	public int tileRowsLog2;
 	public int tileColsLog2;
 	public int autoTiling;
+//	public int scalingMode;
 	/** C type : avifIOStats */
 	public avifIOStats ioStats;
 	/** C type : avifDiagnostics */
@@ -45,7 +57,8 @@ public class avifEncoder extends Structure {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("codecChoice", "maxThreads", "speed", "keyframeInterval", "timescale", "minQuantizer", "maxQuantizer", "minQuantizerAlpha", "maxQuantizerAlpha", "tileRowsLog2", "tileColsLog2", "autoTiling", "ioStats", "diag", "data", "csOptions");
+		return Arrays.asList("codecChoice", "maxThreads", "speed", "keyframeInterval", "timescale", /*"repetitionCount", "extraLayerCount", "quality", "qualityAlpha",*/
+				"minQuantizer", "maxQuantizer", "minQuantizerAlpha", "maxQuantizerAlpha", "tileRowsLog2", "tileColsLog2", "autoTiling", /*"scalingMode",*/ "ioStats", "diag", "data", "csOptions");
 	}
 	public avifEncoder(Pointer peer) {
 		super(peer);

@@ -11,12 +11,18 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -52,6 +58,9 @@ class Test1 {
 
     @Property(name = "file")
     String file = "src/test/resources/kimono.avif";
+
+    @Property(name = "zip")
+    String zip;
 
     @BeforeEach
     void setup() throws IOException {
@@ -165,5 +174,24 @@ for (String w : ws) {
     void test2() throws Exception {
         InputStream is = Files.newInputStream(Paths.get(file));
         show(ImageIO.read(is));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
+    void test3() throws Exception {
+        Path p = Paths.get(zip);
+        try (FileSystem fs = FileSystems.newFileSystem(URI.create("jar:" + p.toUri()), Collections.emptyMap());
+             Stream<Path> files = Files.walk(fs.getRootDirectories().iterator().next())) {
+            files.forEach(f -> {
+                if (!Files.isDirectory(f) && f.getFileName().toString().endsWith(".avif")) {
+                    try {
+                        ImageIO.read(Files.newInputStream(f));
+                        System.err.println("OK: " + f);
+                    } catch (IOException e) {
+                        System.err.println("ERROR: " + f + ", " + e.getMessage());
+                    }
+                }
+            });
+        }
     }
 }

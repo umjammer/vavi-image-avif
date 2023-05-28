@@ -61,7 +61,7 @@ Debug.println(Level.SEVERE, "wrong version: " + version);
         Pointer buffer = Native.getDirectBufferPointer(encoded);
         avifDecoder decoder = createDecoderAndParse(buffer, length, Runtime.getRuntime().availableProcessors());
         BufferedImage image = new BufferedImage(decoder.image.width, decoder.image.height, BufferedImage.TYPE_4BYTE_ABGR);
-//System.err.println("image depth: " + decoder.image.depth);
+Debug.println(Level.FINER, "image depth: " + decoder.image.depth);
         return image;
     }
 
@@ -123,22 +123,27 @@ Debug.println(Level.SEVERE, "wrong version: " + version);
         }
         avifRGBImage rgb_image = new avifRGBImage();
         AvifLibrary.INSTANCE.avifRGBImageSetDefaults(rgb_image, decoder.image);
+        int bytes;
         if (bitmap.getType() == BufferedImage.TYPE_USHORT_565_RGB) {
             rgb_image.format = AvifLibrary.avifRGBFormat.AVIF_RGB_FORMAT_RGB;
             rgb_image.depth = 8;
+            bytes = 2;
         } else {
             rgb_image.depth = 8;
+            bytes = 4;
         }
-        ByteBuffer nativeBuffer = ByteBuffer.allocateDirect(bitmap.getWidth() * bitmap.getHeight() * 4);
+        ByteBuffer nativeBuffer = ByteBuffer.allocateDirect(bitmap.getWidth() * bitmap.getHeight() * bytes);
         rgb_image.pixels = Native.getDirectBufferPointer(nativeBuffer);
-        rgb_image.rowBytes = bitmap.getWidth() * 4;
+        rgb_image.rowBytes = bitmap.getWidth() * bytes;
         res = AvifLibrary.INSTANCE.avifImageYUVToRGB(decoder.image, rgb_image);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
             throw new IllegalStateException(String.format("Failed to convert YUV Pixels to RGB. Status: %d", res));
         }
+        // cause nativeBuffer doesn't have array()
         ByteBuffer localBuffer = ByteBuffer.allocate(nativeBuffer.capacity());
         localBuffer.put(nativeBuffer);
         bitmap.getRaster().setDataElements(0, 0, bitmap.getWidth(), bitmap.getHeight(), localBuffer.array());
+        AvifLibrary.INSTANCE.avifDecoderDestroy(decoder);
         return bitmap;
     }
 }
