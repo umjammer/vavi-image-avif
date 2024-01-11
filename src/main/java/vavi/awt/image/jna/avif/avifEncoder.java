@@ -21,7 +21,7 @@ public class avifEncoder extends Structure {
 	public int codecChoice;
 	public int maxThreads;
 	public int speed;
-	/** How many frames between automatic forced keyframes; 0 to disable (default). */
+	/** Any set of |keyframeInterval| consecutive frames will have at least one keyframe. When it is 0, */
 	public int keyframeInterval;
 	/** timescale of the media (Hz) */
 	public long timescale;
@@ -31,20 +31,21 @@ public class avifEncoder extends Structure {
 	 * Essentially, if repetitionCount is a non-negative integer `n`, then the image sequence should be
 	 * played back `n + 1` times. Defaults to AVIF_REPETITION_COUNT_INFINITE.
 	 */
-//	public int repetitionCount;
+	public int repetitionCount;
 	/** EXPERIMENTAL: Non-zero value encodes layered image. */
-//	public int extraLayerCount;
-	// changeable encoder settings
-//	public int quality;
-//	public int qualityAlpha;
+	public int extraLayerCount;
+	public int quality;
+	public int qualityAlpha;
 	public int minQuantizer;
 	public int maxQuantizer;
 	public int minQuantizerAlpha;
 	public int maxQuantizerAlpha;
 	public int tileRowsLog2;
 	public int tileColsLog2;
+	/** C type : avifBool */
 	public int autoTiling;
-//	public int scalingMode;
+	/** C type : avifScalingMode */
+	public avifScalingMode scalingMode;
 	/** C type : avifIOStats */
 	public avifIOStats ioStats;
 	/** C type : avifDiagnostics */
@@ -53,12 +54,15 @@ public class avifEncoder extends Structure {
 	public avifEncoderData data;
 	/** C type : avifCodecSpecificOptions* */
 	public avifCodecSpecificOptions csOptions;
+	/**
+	 * @see AvifLibrary.avifHeaderFormat
+	 */
+	public int headerFormat;
 	public avifEncoder() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("codecChoice", "maxThreads", "speed", "keyframeInterval", "timescale", /*"repetitionCount", "extraLayerCount", "quality", "qualityAlpha",*/
-				"minQuantizer", "maxQuantizer", "minQuantizerAlpha", "maxQuantizerAlpha", "tileRowsLog2", "tileColsLog2", "autoTiling", /*"scalingMode",*/ "ioStats", "diag", "data", "csOptions");
+	protected List<String > getFieldOrder() {
+		return Arrays.asList("codecChoice", "maxThreads", "speed", "keyframeInterval", "timescale", "repetitionCount", "extraLayerCount", "quality", "qualityAlpha", "minQuantizer", "maxQuantizer", "minQuantizerAlpha", "maxQuantizerAlpha", "tileRowsLog2", "tileColsLog2", "autoTiling", "scalingMode", "ioStats", "diag", "data", "csOptions", "headerFormat");
 	}
 	public avifEncoder(Pointer peer) {
 		super(peer);

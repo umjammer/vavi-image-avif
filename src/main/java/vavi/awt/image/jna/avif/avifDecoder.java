@@ -56,10 +56,12 @@ public class avifDecoder extends Structure {
 	public avifImageTiming imageTiming;
 	/** timescale of the media (Hz) */
 	public long timescale;
-	/** in seconds (durationInTimescales / timescale) */
+	/** duration of a single playback of the image sequence in seconds */
 	public double duration;
-	/** duration in "timescales" */
+	/** duration of a single playback of the image sequence in "timescales" */
 	public long durationInTimescales;
+	/** number of times the sequence has to be repeated. This can also be one of */
+	public int repetitionCount;
 	/** C type : avifBool */
 	public int alphaPresent;
 	/** C type : avifIOStats */
@@ -70,11 +72,13 @@ public class avifDecoder extends Structure {
 	public vavi.awt.image.jna.avif.avifIO.ByReference io;
 	/** C type : avifDecoderData* */
 	public avifDecoderData data;
+	/** C type : avifBool */
+	public int imageSequenceTrackPresent;
 	public avifDecoder() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "alphaPresent", "ioStats", "diag", "io", "data");
+	protected List<String > getFieldOrder() {
+		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "repetitionCount", "alphaPresent", "ioStats", "diag", "io", "data", "imageSequenceTrackPresent");
 	}
 	public avifDecoder(Pointer peer) {
 		super(peer);

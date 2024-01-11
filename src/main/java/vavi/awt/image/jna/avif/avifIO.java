@@ -50,10 +50,8 @@ public class avifIO extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifIO implements Structure.ByReference {
-		
 	}
 
     public static class ByValue extends avifIO implements Structure.ByValue {
-		
 	}
 }

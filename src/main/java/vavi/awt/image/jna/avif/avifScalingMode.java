@@ -1,5 +1,4 @@
 package vavi.awt.image.jna.avif;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
@@ -10,28 +9,31 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class avifRWData extends Structure {
-	/** C type : uint8_t* */
-	public Pointer data;
-	public NativeLong size;
-	public avifRWData() {
+public class avifScalingMode extends Structure {
+	/** C type : avifFraction */
+	public avifFraction horizontal;
+	/** C type : avifFraction */
+	public avifFraction vertical;
+	public avifScalingMode() {
 		super();
 	}
 	protected List<String > getFieldOrder() {
-		return Arrays.asList("data", "size");
+		return Arrays.asList("horizontal", "vertical");
 	}
-	/** @param data C type : uint8_t* */
-	public avifRWData(Pointer data, NativeLong size) {
+	/**
+	 * @param horizontal C type : avifFraction<br>
+	 * @param vertical C type : avifFraction
+	 */
+	public avifScalingMode(avifFraction horizontal, avifFraction vertical) {
 		super();
-		this.data = data;
-		this.size = size;
+		this.horizontal = horizontal;
+		this.vertical = vertical;
 	}
-	public avifRWData(Pointer peer) {
+	public avifScalingMode(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends avifRWData implements Structure.ByReference {
-	}
-
-	public static class ByValue extends avifRWData implements Structure.ByValue {
-	}
+	public static class ByReference extends avifScalingMode implements Structure.ByReference {
+	};
+	public static class ByValue extends avifScalingMode implements Structure.ByValue {
+	};
 }

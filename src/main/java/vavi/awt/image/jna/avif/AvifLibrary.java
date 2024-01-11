@@ -4,9 +4,11 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.PointerType;
 import com.sun.jna.ptr.FloatByReference;
+import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.PointerByReference;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -21,10 +23,10 @@ public interface AvifLibrary extends Library {
     String JNA_LIBRARY_NAME = "avif";
     NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(AvifLibrary.JNA_LIBRARY_NAME);
     AvifLibrary INSTANCE = Native.load(AvifLibrary.JNA_LIBRARY_NAME, AvifLibrary.class);
-    /**
+	/**
      * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
+	 * enum values
+	 */
     interface avifPlanesFlag {
         /** <i>native declaration : avif/avif.h:82</i> */
         int AVIF_PLANES_YUV = (1 << 0);
@@ -34,969 +36,1096 @@ public interface AvifLibrary extends Library {
         int AVIF_PLANES_ALL = 0xff;
     }
 
-    /**
+	/**
      * <i>native declaration : avif/avif.h:89</i><br>
-     * enum values
-     */
-    interface avifChannelIndex {
-        /** <i>native declaration : avif/avif.h:97</i> */
-        int AVIF_CHAN_Y = 0;
-        /** <i>native declaration : avif/avif.h:98</i> */
-        int AVIF_CHAN_U = 1;
-        /** <i>native declaration : avif/avif.h:99</i> */
-        int AVIF_CHAN_V = 2;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifResult {
-        /** <i>native declaration : avif/avif.h:120</i> */
-        int AVIF_RESULT_OK = 0;
-        /** <i>native declaration : avif/avif.h:121</i> */
-        int AVIF_RESULT_UNKNOWN_ERROR = 1;
-        /** <i>native declaration : avif/avif.h:122</i> */
-        int AVIF_RESULT_INVALID_FTYP = 2;
-        /** <i>native declaration : avif/avif.h:123</i> */
-        int AVIF_RESULT_NO_CONTENT = 3;
-        /** <i>native declaration : avif/avif.h:124</i> */
-        int AVIF_RESULT_NO_YUV_FORMAT_SELECTED = 4;
-        /** <i>native declaration : avif/avif.h:125</i> */
-        int AVIF_RESULT_REFORMAT_FAILED = 5;
-        /** <i>native declaration : avif/avif.h:126</i> */
-        int AVIF_RESULT_UNSUPPORTED_DEPTH = 6;
-        /** <i>native declaration : avif/avif.h:127</i> */
-        int AVIF_RESULT_ENCODE_COLOR_FAILED = 7;
-        /** <i>native declaration : avif/avif.h:128</i> */
-        int AVIF_RESULT_ENCODE_ALPHA_FAILED = 8;
-        /** <i>native declaration : avif/avif.h:129</i> */
-        int AVIF_RESULT_BMFF_PARSE_FAILED = 9;
-        /** <i>native declaration : avif/avif.h:130</i> */
-        int AVIF_RESULT_NO_AV1_ITEMS_FOUND = 10;
-        /** <i>native declaration : avif/avif.h:131</i> */
-        int AVIF_RESULT_DECODE_COLOR_FAILED = 11;
-        /** <i>native declaration : avif/avif.h:132</i> */
-        int AVIF_RESULT_DECODE_ALPHA_FAILED = 12;
-        /** <i>native declaration : avif/avif.h:133</i> */
-        int AVIF_RESULT_COLOR_ALPHA_SIZE_MISMATCH = 13;
-        /** <i>native declaration : avif/avif.h:134</i> */
-        int AVIF_RESULT_ISPE_SIZE_MISMATCH = 14;
-        /** <i>native declaration : avif/avif.h:135</i> */
-        int AVIF_RESULT_NO_CODEC_AVAILABLE = 15;
-        /** <i>native declaration : avif/avif.h:136</i> */
-        int AVIF_RESULT_NO_IMAGES_REMAINING = 16;
-        /** <i>native declaration : avif/avif.h:137</i> */
-        int AVIF_RESULT_INVALID_EXIF_PAYLOAD = 17;
-        /** <i>native declaration : avif/avif.h:138</i> */
-        int AVIF_RESULT_INVALID_IMAGE_GRID = 18;
-        /** <i>native declaration : avif/avif.h:139</i> */
-        int AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION = 19;
-        /** <i>native declaration : avif/avif.h:140</i> */
-        int AVIF_RESULT_TRUNCATED_DATA = 20;
-        /**
-         * the avifIO field of avifDecoder is not set<br>
-         * <i>native declaration : avif/avif.h:141</i>
-         */
-        int AVIF_RESULT_IO_NOT_SET = 21;
-        /** <i>native declaration : avif/avif.h:142</i> */
-        int AVIF_RESULT_IO_ERROR = 22;
-        /**
-         * similar to EAGAIN/EWOULDBLOCK, this means the avifIO doesn't have necessary data available yet<br>
-         * <i>native declaration : avif/avif.h:143</i>
-         */
-        int AVIF_RESULT_WAITING_ON_IO = 23;
-        /**
-         * an argument passed into this function is invalid<br>
-         * <i>native declaration : avif/avif.h:144</i>
-         */
-        int AVIF_RESULT_INVALID_ARGUMENT = 24;
-        /**
-         * a requested code path is not (yet) implemented<br>
-         * <i>native declaration : avif/avif.h:145</i>
-         */
-        int AVIF_RESULT_NOT_IMPLEMENTED = 25;
-        /** <i>native declaration : avif/avif.h:146</i> */
-        int AVIF_RESULT_OUT_OF_MEMORY = 26;
-        /** a setting that can't change is changed during encoding */
-        int AVIF_RESULT_CANNOT_CHANGE_SETTING = 27;
-        /** the image is incompatible with already encoded images */
-        int AVIF_RESULT_INCOMPATIBLE_IMAGE = 28;
-    }
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifPixelFormat {
-        /** <i>native declaration : avif/avif.h:183</i> */
-        int AVIF_PIXEL_FORMAT_NONE = 0;
-        /** <i>native declaration : avif/avif.h:185</i> */
-        int AVIF_PIXEL_FORMAT_YUV444 = 1;
-        /** <i>native declaration : avif/avif.h:186</i> */
-        int AVIF_PIXEL_FORMAT_YUV422 = 2;
-        /** <i>native declaration : avif/avif.h:187</i> */
-        int AVIF_PIXEL_FORMAT_YUV420 = 3;
-        /** <i>native declaration : avif/avif.h:188</i> */
-        int AVIF_PIXEL_FORMAT_YUV400 = 4;
-        /** */
-        int AVIF_PIXEL_FORMAT_COUNT = 5;
-    }
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifChromaSamplePosition {
-        /** <i>native declaration : avif/avif.h:206</i> */
-        int AVIF_CHROMA_SAMPLE_POSITION_UNKNOWN = 0;
-        /** <i>native declaration : avif/avif.h:207</i> */
-        int AVIF_CHROMA_SAMPLE_POSITION_VERTICAL = 1;
-        /** <i>native declaration : avif/avif.h:208</i> */
-        int AVIF_CHROMA_SAMPLE_POSITION_COLOCATED = 2;
-    }
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifRange {
-        /** <i>native declaration : avif/avif.h:216</i> */
-        int AVIF_RANGE_LIMITED = 0;
-        /** <i>native declaration : avif/avif.h:217</i> */
-        int AVIF_RANGE_FULL = 1;
-    }
-    int AVIF_COLOR_PRIMARIES_UNKNOWN = 0;
-    int AVIF_COLOR_PRIMARIES_BT709 = 1;
-    int AVIF_COLOR_PRIMARIES_IEC61966_2_4 = 1;
-    int AVIF_COLOR_PRIMARIES_UNSPECIFIED = 2;
-    int AVIF_COLOR_PRIMARIES_BT470M = 4;
-    int AVIF_COLOR_PRIMARIES_BT470BG = 5;
-    int AVIF_COLOR_PRIMARIES_BT601 = 6;
-    int AVIF_COLOR_PRIMARIES_SMPTE240 = 7;
-    int AVIF_COLOR_PRIMARIES_GENERIC_FILM = 8;
-    int AVIF_COLOR_PRIMARIES_BT2020 = 9;
-    int AVIF_COLOR_PRIMARIES_XYZ = 10;
-    int AVIF_COLOR_PRIMARIES_SMPTE431 = 11;
-    /** DCI P3 */
-    int AVIF_COLOR_PRIMARIES_SMPTE432 = 12;
-    int AVIF_COLOR_PRIMARIES_EBU3213 = 22;
-    int AVIF_TRANSFER_CHARACTERISTICS_UNKNOWN = 0;
-    int AVIF_TRANSFER_CHARACTERISTICS_BT709 = 1;
-    int AVIF_TRANSFER_CHARACTERISTICS_UNSPECIFIED = 2;
-    /** 2.2 gamma */
-    int AVIF_TRANSFER_CHARACTERISTICS_BT470M = 4;
-    /** 2.8 gamma */
-    int AVIF_TRANSFER_CHARACTERISTICS_BT470BG = 5;
-    int AVIF_TRANSFER_CHARACTERISTICS_BT601 = 6;
-    int AVIF_TRANSFER_CHARACTERISTICS_SMPTE240 = 7;
-    int AVIF_TRANSFER_CHARACTERISTICS_LINEAR = 8;
-    int AVIF_TRANSFER_CHARACTERISTICS_LOG100 = 9;
-    int AVIF_TRANSFER_CHARACTERISTICS_LOG100_SQRT10 = 10;
-    int AVIF_TRANSFER_CHARACTERISTICS_IEC61966 = 11;
-    int AVIF_TRANSFER_CHARACTERISTICS_BT1361 = 12;
-    int AVIF_TRANSFER_CHARACTERISTICS_SRGB = 13;
-    int AVIF_TRANSFER_CHARACTERISTICS_BT2020_10BIT = 14;
-    int AVIF_TRANSFER_CHARACTERISTICS_BT2020_12BIT = 15;
-    /** PQ */
-    int AVIF_TRANSFER_CHARACTERISTICS_SMPTE2084 = 16;
-    int AVIF_TRANSFER_CHARACTERISTICS_SMPTE428 = 17;
-    int AVIF_TRANSFER_CHARACTERISTICS_HLG = 18;
-    int AVIF_MATRIX_COEFFICIENTS_IDENTITY = 0;
-    int AVIF_MATRIX_COEFFICIENTS_BT709 = 1;
-    int AVIF_MATRIX_COEFFICIENTS_UNSPECIFIED = 2;
-    int AVIF_MATRIX_COEFFICIENTS_FCC = 4;
-    int AVIF_MATRIX_COEFFICIENTS_BT470BG = 5;
-    int AVIF_MATRIX_COEFFICIENTS_BT601 = 6;
-    int AVIF_MATRIX_COEFFICIENTS_SMPTE240 = 7;
-    int AVIF_MATRIX_COEFFICIENTS_YCGCO = 8;
-    int AVIF_MATRIX_COEFFICIENTS_BT2020_NCL = 9;
-    int AVIF_MATRIX_COEFFICIENTS_BT2020_CL = 10;
-    int AVIF_MATRIX_COEFFICIENTS_SMPTE2085 = 11;
-    int AVIF_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL = 12;
-    int AVIF_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL = 13;
-    int AVIF_MATRIX_COEFFICIENTS_ICTCP = 14;
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifTransformFlag {
-        /** <i>native declaration : avif/avif.h:315</i> */
-        int AVIF_TRANSFORM_NONE = 0;
-        /** <i>native declaration : avif/avif.h:317</i> */
-        int AVIF_TRANSFORM_PASP = (1 << 0);
-        /** <i>native declaration : avif/avif.h:318</i> */
-        int AVIF_TRANSFORM_CLAP = (1 << 1);
-        /** <i>native declaration : avif/avif.h:319</i> */
-        int AVIF_TRANSFORM_IROT = (1 << 2);
-        /** <i>native declaration : avif/avif.h:320</i> */
-        int AVIF_TRANSFORM_IMIR = (1 << 3);
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifRGBFormat {
-        /** <i>native declaration : avif/avif.h:533</i> */
-        int AVIF_RGB_FORMAT_RGB = 0;
-        /**
-         * This is the default format set in avifRGBImageSetDefaults().<br>
-         * <i>native declaration : avif/avif.h:534</i>
-         */
-        int AVIF_RGB_FORMAT_RGBA = 1;
-        /** <i>native declaration : avif/avif.h:535</i> */
-        int AVIF_RGB_FORMAT_ARGB = 2;
-        /** <i>native declaration : avif/avif.h:536</i> */
-        int AVIF_RGB_FORMAT_BGR = 3;
-        /** <i>native declaration : avif/avif.h:537</i> */
-        int AVIF_RGB_FORMAT_BGRA = 4;
-        /** <i>native declaration : avif/avif.h:538</i> */
-        int AVIF_RGB_FORMAT_ABGR = 5;
-        /**
-         * RGB_565 format uses five bits for the red and blue components and six
-         * bits for the green component. Each RGB pixel is 16 bits (2 bytes), which
-         * is packed as follows:
-         * <pre>
-         *   uint16_t: [r4 r3 r2 r1 r0 g5 g4 g3 g2 g1 g0 b4 b3 b2 b1 b0]
-         *   r4 and r0 are the MSB and LSB of the red component respectively.
-         *   g5 and g0 are the MSB and LSB of the green component respectively.
-         *   b4 and b0 are the MSB and LSB of the blue component respectively.
-         * </pre>
-         * This format is only supported for YUV -> RGB conversion and when
-         * avifRGBImage.depth is set to 8.
-         */
-        int AVIF_RGB_FORMAT_RGB_565 = 6;
-        int AVIF_RGB_FORMAT_COUNT = 7;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifChromaUpsampling {
-        /**
-         * Chooses best trade off of speed/quality (prefers libyuv, else uses BEST_QUALITY)<br>
-         * <i>native declaration : avif/avif.h:545</i>
-         */
-        int AVIF_CHROMA_UPSAMPLING_AUTOMATIC = 0;
-        /**
-         * Chooses speed over quality (prefers libyuv, else uses NEAREST)<br>
-         * <i>native declaration : avif/avif.h:546</i>
-         */
-        int AVIF_CHROMA_UPSAMPLING_FASTEST = 1;
-        /**
-         * Chooses the best quality upsampling, given settings (avoids libyuv)<br>
-         * <i>native declaration : avif/avif.h:547</i>
-         */
-        int AVIF_CHROMA_UPSAMPLING_BEST_QUALITY = 2;
-        /**
-         * Uses nearest-neighbor filter (built-in)<br>
-         * <i>native declaration : avif/avif.h:548</i>
-         */
-        int AVIF_CHROMA_UPSAMPLING_NEAREST = 3;
-        /**
-         * Uses bilinear filter (built-in)<br>
-         * <i>native declaration : avif/avif.h:549</i>
-         */
-        int AVIF_CHROMA_UPSAMPLING_BILINEAR = 4;
-    }
-
-    interface avifChromaDownsampling {
-        /** Chooses best trade off of speed/quality (same as AVERAGE) */
-        int AVIF_CHROMA_DOWNSAMPLING_AUTOMATIC = 0;
-        /** Chooses speed over quality (same as AVERAGE) */
-        int AVIF_CHROMA_DOWNSAMPLING_FASTEST = 1;
-        /** Chooses the best quality upsampling (same as AVERAGE) */
-        int AVIF_CHROMA_DOWNSAMPLING_BEST_QUALITY = 2;
-        /** Uses averaging filter */
-        int AVIF_CHROMA_DOWNSAMPLING_AVERAGE = 3;
-        /** Uses sharp yuv filter (libsharpyuv), available for 4:2:0 only, ignored for 4:2:2 */
-        int AVIF_CHROMA_DOWNSAMPLING_SHARP_YUV = 4;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifCodecChoice {
-        /** <i>native declaration : avif/avif.h:602</i> */
-        int AVIF_CODEC_CHOICE_AUTO = 0;
-        /** <i>native declaration : avif/avif.h:603</i> */
-        int AVIF_CODEC_CHOICE_AOM = 1;
-        /**
-         * Decode only<br>
-         * <i>native declaration : avif/avif.h:604</i>
-         */
-        int AVIF_CODEC_CHOICE_DAV1D = 2;
-        /**
-         * Decode only<br>
-         * <i>native declaration : avif/avif.h:605</i>
-         */
-        int AVIF_CODEC_CHOICE_LIBGAV1 = 3;
-        /**
-         * Encode only<br>
-         * <i>native declaration : avif/avif.h:606</i>
-         */
-        int AVIF_CODEC_CHOICE_RAV1E = 4;
-        /**
-         * Encode only<br>
-         * <i>native declaration : avif/avif.h:607</i>
-         */
-        int AVIF_CODEC_CHOICE_SVT = 5;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifCodecFlag {
-        /** <i>native declaration : avif/avif.h:612</i> */
-        int AVIF_CODEC_FLAG_CAN_DECODE = (1 << 0);
-        /** <i>native declaration : avif/avif.h:613</i> */
-        int AVIF_CODEC_FLAG_CAN_ENCODE = (1 << 1);
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifStrictFlag {
-        /** <i>native declaration : avif/avif.h:712</i> */
-        int AVIF_STRICT_DISABLED = 0;
-        /** <i>native declaration : avif/avif.h:718</i> */
-        int AVIF_STRICT_PIXI_REQUIRED = (1 << 0);
-        /** <i>native declaration : avif/avif.h:723</i> */
-        int AVIF_STRICT_CLAP_VALID = (1 << 1);
-        /** <i>native declaration : avif/avif.h:731</i> */
-        int AVIF_STRICT_ALPHA_ISPE_REQUIRED = (1 << 2);
-        /** <i>native declaration : avif/avif.h:734</i> */
-        int AVIF_STRICT_ENABLED = avifStrictFlag.AVIF_STRICT_PIXI_REQUIRED | avifStrictFlag.AVIF_STRICT_CLAP_VALID | avifStrictFlag.AVIF_STRICT_ALPHA_ISPE_REQUIRED;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifDecoderSource {
-        /** <i>native declaration : avif/avif.h:752</i> */
-        int AVIF_DECODER_SOURCE_AUTO = 0;
-        /** <i>native declaration : avif/avif.h:756</i> */
-        int AVIF_DECODER_SOURCE_PRIMARY_ITEM = 1;
-        /** <i>native declaration : avif/avif.h:760</i> */
-        int AVIF_DECODER_SOURCE_TRACKS = 2;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifProgressiveState {
-        /** <i>native declaration : avif/avif.h:780</i> */
-        int AVIF_PROGRESSIVE_STATE_UNAVAILABLE = 0;
-        /** <i>native declaration : avif/avif.h:785</i> */
-        int AVIF_PROGRESSIVE_STATE_AVAILABLE = 1;
-        /** <i>native declaration : avif/avif.h:792</i> */
-        int AVIF_PROGRESSIVE_STATE_ACTIVE = 2;
-    }
-
-    /**
-     * <i>native declaration : avif/avif.h</i><br>
-     * enum values
-     */
-    interface avifAddImageFlag {
-        /** <i>native declaration : avif/avif.h:1037</i> */
-        int AVIF_ADD_IMAGE_FLAG_NONE = 0;
-        /** <i>native declaration : avif/avif.h:1040</i> */
-        int AVIF_ADD_IMAGE_FLAG_FORCE_KEYFRAME = (1 << 0);
-        /** <i>native declaration : avif/avif.h:1045</i> */
-        int AVIF_ADD_IMAGE_FLAG_SINGLE = (1 << 1);
-    }
-
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_VERSION_MAJOR = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_VERSION_MINOR = 10;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_VERSION_PATCH = 1;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_VERSION_DEVEL = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_VERSION = (0 * 1000000) + (10 * 10000) + (1 * 100) + 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_TRUE = 1;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_FALSE = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_DIAGNOSTICS_ERROR_BUFFER_SIZE = 256;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_DEFAULT_IMAGE_SIZE_LIMIT = 16384 * 16384;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_DEFAULT_IMAGE_COUNT_LIMIT = 12 * 3600 * 60;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_QUANTIZER_LOSSLESS = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_QUANTIZER_BEST_QUALITY = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_QUANTIZER_WORST_QUALITY = 63;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_PLANE_COUNT_YUV = 3;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_SPEED_DEFAULT = -1;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_SPEED_SLOWEST = 0;
-    /** <i>native declaration : avif/avif.h</i> */
-    int AVIF_SPEED_FASTEST = 10;
-    /** <i>native declaration : avif/avif.h</i> */
-    interface avifIODestroyFunc extends Callback {
-        void apply(avifIO io);
-    }
-    /** <i>native declaration : avif/avif.h</i> */
-    interface avifIOReadFunc extends Callback {
-        int apply(avifIO io, int readFlags, long offset, int size, avifROData out);
-    }
-    /** <i>native declaration : avif/avif.h</i> */
-    interface avifIOWriteFunc extends Callback {
-        int apply(avifIO io, int writeFlags, long offset, Pointer data, int size);
-    }
-    /**
-     * Version<br>
-     * Original signature : <code>char* avifVersion()</code><br>
-     * <i>native declaration : avif/avif.h:105</i>
-     */
-    String avifVersion();
-    /**
-     * Original signature : <code>void avifCodecVersions(char[256])</code><br>
-     * <i>native declaration : avif/avif.h:106</i><br>
-     * @deprecated use the safer methods {@link #avifCodecVersions(java.nio.ByteBuffer)} and {@link #avifCodecVersions(com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    void avifCodecVersions(Pointer outBuffer);
-    /**
-     * Original signature : <code>void avifCodecVersions(char[256])</code><br>
-     * <i>native declaration : avif/avif.h:106</i>
-     */
-    void avifCodecVersions(ByteBuffer outBuffer);
-    /**
-     * returns 0 if libavif wasn't compiled with libyuv support<br>
-     * Original signature : <code>int avifLibYUVVersion()</code><br>
-     * <i>native declaration : avif/avif.h:107</i>
-     */
-    int avifLibYUVVersion();
-    /**
-     * Memory management<br>
-     * Original signature : <code>void* avifAlloc(size_t)</code><br>
-     * <i>native declaration : avif/avif.h:112</i>
-     */
-    Pointer avifAlloc(int size);
-    /**
-     * Original signature : <code>void avifFree(void*)</code><br>
-     * <i>native declaration : avif/avif.h:113</i>
-     */
-    void avifFree(Pointer p);
-    /**
-     * Original signature : <code>char* avifResultToString(avifResult)</code><br>
-     * <i>native declaration : avif/avif.h:149</i>
-     */
-    String avifResultToString(int result);
-    /**
-     * clang-format on<br>
-     * Original signature : <code>void avifRWDataRealloc(avifRWData*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:173</i>
-     */
-    void avifRWDataRealloc(avifRWData raw, int newSize);
-    /**
-     * Original signature : <code>void avifRWDataSet(avifRWData*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:174</i><br>
-     * @deprecated use the safer methods {@link #avifRWDataSet(vavi.awt.image.jna.avif.avifRWData, byte[], int)} and {@link #avifRWDataSet(vavi.awt.image.jna.avif.avifRWData, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    void avifRWDataSet(avifRWData raw, Pointer data, int len);
-    /**
-     * Original signature : <code>void avifRWDataSet(avifRWData*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:174</i>
-     */
-    void avifRWDataSet(avifRWData raw, byte[] data, int len);
-    /**
-     * Original signature : <code>void avifRWDataFree(avifRWData*)</code><br>
-     * <i>native declaration : avif/avif.h:175</i>
-     */
-    void avifRWDataFree(avifRWData raw);
-    /**
-     * Original signature : <code>char* avifPixelFormatToString(avifPixelFormat)</code><br>
-     * <i>native declaration : avif/avif.h:190</i>
-     */
-    String avifPixelFormatToString(int format);
-    /**
-     * Original signature : <code>void avifGetPixelFormatInfo(avifPixelFormat, avifPixelFormatInfo*)</code><br>
-     * <i>native declaration : avif/avif.h:199</i>
-     */
-    void avifGetPixelFormatInfo(int format, avifPixelFormatInfo info);
-    /**
-     * outPrimaries: rX, rY, gX, gY, bX, bY, wX, wY<br>
-     * Original signature : <code>void avifColorPrimariesGetValues(avifColorPrimaries, float[8])</code><br>
-     * <i>native declaration : avif/avif.h:245</i><br>
-     * @deprecated use the safer methods {@link #avifColorPrimariesGetValues(short, java.nio.FloatBuffer)} and {@link #avifColorPrimariesGetValues(short, com.sun.jna.ptr.FloatByReference)} instead
-     */
-    @Deprecated
-    void avifColorPrimariesGetValues(short acp, FloatByReference outPrimaries);
-    /**
-     * outPrimaries: rX, rY, gX, gY, bX, bY, wX, wY<br>
-     * Original signature : <code>void avifColorPrimariesGetValues(avifColorPrimaries, float[8])</code><br>
-     * <i>native declaration : avif/avif.h:245</i>
-     */
-    void avifColorPrimariesGetValues(short acp, FloatBuffer outPrimaries);
-    /**
-     * Original signature : <code>avifColorPrimaries avifColorPrimariesFind(const float[8], const char**)</code><br>
-     * <i>native declaration : avif/avif.h:246</i><br>
-     * @deprecated use the safer methods {@link #avifColorPrimariesFind(float[], java.lang.String[])} and {@link #avifColorPrimariesFind(com.sun.jna.ptr.FloatByReference, com.sun.jna.ptr.PointerByReference)} instead
-     */
-    @Deprecated
-    short avifColorPrimariesFind(FloatByReference inPrimaries, PointerByReference outName);
-    /**
-     * Original signature : <code>avifColorPrimaries avifColorPrimariesFind(const float[8], const char**)</code><br>
-     * <i>native declaration : avif/avif.h:246</i>
-     */
-    short avifColorPrimariesFind(float[] inPrimaries, String[] outName);
-    /**
-     * Original signature : <code>void avifDiagnosticsClearError(avifDiagnostics*)</code><br>
-     * <i>native declaration : avif/avif.h:308</i>
-     */
-    void avifDiagnosticsClearError(avifDiagnostics diag);
-    /**
-     * values are not guaranteed to be complete or correct and should not be used.<br>
-     * Original signature : <code>avifBool avifCropRectConvertCleanApertureBox(avifCropRect*, const avifCleanApertureBox*, uint32_t, uint32_t, avifPixelFormat, avifDiagnostics*)</code><br>
-     * <i>native declaration : avif/avif.h:397</i>
-     */
-    int avifCropRectConvertCleanApertureBox(avifCropRect cropRect, avifCleanApertureBox clap, int imageW, int imageH, int yuvFormat, avifDiagnostics diag);
-    /**
-     * Original signature : <code>avifBool avifCleanApertureBoxConvertCropRect(avifCleanApertureBox*, const avifCropRect*, uint32_t, uint32_t, avifPixelFormat, avifDiagnostics*)</code><br>
-     * <i>native declaration : avif/avif.h:403</i>
-     */
-    int avifCleanApertureBoxConvertCropRect(avifCleanApertureBox clap, avifCropRect cropRect, int imageW, int imageH, int yuvFormat, avifDiagnostics diag);
-    /**
-     * Original signature : <code>avifImage* avifImageCreate(int, int, int, avifPixelFormat)</code><br>
-     * <i>native declaration : avif/avif.h:464</i>
-     */
-    avifImage avifImageCreate(int width, int height, int depth, int yuvFormat);
-    /**
-     * helper for making an image to decode into<br>
-     * Original signature : <code>avifImage* avifImageCreateEmpty()</code><br>
-     * <i>native declaration : avif/avif.h:465</i>
-     */
-    avifImage avifImageCreateEmpty();
-    /**
-     * deep copy<br>
-     * Original signature : <code>void avifImageCopy(avifImage*, const avifImage*, avifPlanesFlags)</code><br>
-     * <i>native declaration : avif/avif.h:466</i>
-     */
-    int avifImageCopy(avifImage dstImage, avifImage srcImage, int planes);
-    /**
-     * shallow copy, no metadata<br>
-     * Original signature : <code>avifResult avifImageSetViewRect(avifImage*, const avifImage*, const avifCropRect*)</code><br>
-     * <i>native declaration : avif/avif.h:467</i>
-     */
-    int avifImageSetViewRect(avifImage dstImage, avifImage srcImage, avifCropRect rect);
-    /**
-     * Original signature : <code>void avifImageDestroy(avifImage*)</code><br>
-     * <i>native declaration : avif/avif.h:468</i>
-     */
-    void avifImageDestroy(avifImage image);
-    /**
-     * Original signature : <code>void avifImageSetProfileICC(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:470</i><br>
-     * @deprecated use the safer methods {@link #avifImageSetProfileICC(vavi.awt.image.jna.avif.avifImage, byte[], int)} and {@link #avifImageSetProfileICC(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    void avifImageSetProfileICC(avifImage image, Pointer icc, int iccSize);
-    /**
-     * Original signature : <code>void avifImageSetProfileICC(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:470</i>
-     */
-    void avifImageSetProfileICC(avifImage image, byte[] icc, int iccSize);
-    /**
-     * Warning: If the Exif payload is set and invalid, avifEncoderWrite() may return AVIF_RESULT_INVALID_EXIF_PAYLOAD<br>
-     * Original signature : <code>void avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:473</i><br>
-     * @deprecated use the safer methods {@link #avifImageSetMetadataExif(vavi.awt.image.jna.avif.avifImage, byte[], int)} and {@link #avifImageSetMetadataExif(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    void avifImageSetMetadataExif(avifImage image, Pointer exif, int exifSize);
-    /**
-     * Warning: If the Exif payload is set and invalid, avifEncoderWrite() may return AVIF_RESULT_INVALID_EXIF_PAYLOAD<br>
-     * Original signature : <code>void avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:473</i>
-     */
-    void avifImageSetMetadataExif(avifImage image, byte[] exif, int exifSize);
-    /**
-     * Original signature : <code>void avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:474</i><br>
-     * @deprecated use the safer methods {@link #avifImageSetMetadataXMP(vavi.awt.image.jna.avif.avifImage, byte[], int)} and {@link #avifImageSetMetadataXMP(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    void avifImageSetMetadataXMP(avifImage image, Pointer xmp, int xmpSize);
-    /**
-     * Original signature : <code>void avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:474</i>
-     */
-    void avifImageSetMetadataXMP(avifImage image, byte[] xmp, int xmpSize);
-    /**
-     * Ignores any pre-existing planes<br>
-     * Original signature : <code>void avifImageAllocatePlanes(avifImage*, avifPlanesFlags)</code><br>
-     * <i>native declaration : avif/avif.h:476</i>
-     */
-    int avifImageAllocatePlanes(avifImage image, int planes);
-    /**
-     * Ignores already-freed planes<br>
-     * Original signature : <code>void avifImageFreePlanes(avifImage*, avifPlanesFlags)</code><br>
-     * <i>native declaration : avif/avif.h:477</i>
-     */
-    void avifImageFreePlanes(avifImage image, int planes);
-    /**
-     * Original signature : <code>void avifImageStealPlanes(avifImage*, avifImage*, avifPlanesFlags)</code><br>
-     * <i>native declaration : avif/avif.h:478</i>
-     */
-    void avifImageStealPlanes(avifImage dstImage, avifImage srcImage, int planes);
-    /**
-     * Original signature : <code>uint32_t avifRGBFormatChannelCount(avifRGBFormat)</code><br>
-     * <i>native declaration : avif/avif.h:540</i>
-     */
-    int avifRGBFormatChannelCount(int format);
-    /**
-     * Original signature : <code>avifBool avifRGBFormatHasAlpha(avifRGBFormat)</code><br>
-     * <i>native declaration : avif/avif.h:541</i>
-     */
-    int avifRGBFormatHasAlpha(int format);
-    /**
-     * values.<br>
-     * Original signature : <code>void avifRGBImageSetDefaults(avifRGBImage*, const avifImage*)</code><br>
-     * <i>native declaration : avif/avif.h:572</i>
-     */
-    void avifRGBImageSetDefaults(avifRGBImage rgb, avifImage image);
-    /**
-     * Original signature : <code>uint32_t avifRGBImagePixelSize(const avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:573</i>
-     */
-    int avifRGBImagePixelSize(avifRGBImage rgb);
-    /**
-     * Convenience functions. If you supply your own pixels/rowBytes, you do not need to use these.<br>
-     * Original signature : <code>void avifRGBImageAllocatePixels(avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:576</i>
-     */
-    void avifRGBImageAllocatePixels(avifRGBImage rgb);
-    /**
-     * Original signature : <code>void avifRGBImageFreePixels(avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:577</i>
-     */
-    void avifRGBImageFreePixels(avifRGBImage rgb);
-    /**
-     * The main conversion functions<br>
-     * Original signature : <code>avifResult avifImageRGBToYUV(avifImage*, const avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:580</i>
-     */
-    int avifImageRGBToYUV(avifImage image, avifRGBImage rgb);
-    /**
-     * Original signature : <code>avifResult avifImageYUVToRGB(const avifImage*, avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:581</i>
-     */
-    int avifImageYUVToRGB(avifImage image, avifRGBImage rgb);
-    /**
-     * so usually you don't need to call these. They are there for convenience.<br>
-     * Original signature : <code>avifResult avifRGBImagePremultiplyAlpha(avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:586</i>
-     */
-    int avifRGBImagePremultiplyAlpha(avifRGBImage rgb);
-    /**
-     * Original signature : <code>avifResult avifRGBImageUnpremultiplyAlpha(avifRGBImage*)</code><br>
-     * <i>native declaration : avif/avif.h:587</i>
-     */
-    int avifRGBImageUnpremultiplyAlpha(avifRGBImage rgb);
-    /**
-     * YUV Utils<br>
-     * Original signature : <code>int avifFullToLimitedY(int, int)</code><br>
-     * <i>native declaration : avif/avif.h:592</i>
-     */
-    int avifFullToLimitedY(int depth, int v);
-    /**
-     * Original signature : <code>int avifFullToLimitedUV(int, int)</code><br>
-     * <i>native declaration : avif/avif.h:593</i>
-     */
-    int avifFullToLimitedUV(int depth, int v);
-    /**
-     * Original signature : <code>int avifLimitedToFullY(int, int)</code><br>
-     * <i>native declaration : avif/avif.h:594</i>
-     */
-    int avifLimitedToFullY(int depth, int v);
-    /**
-     * Original signature : <code>int avifLimitedToFullUV(int, int)</code><br>
-     * <i>native declaration : avif/avif.h:595</i>
-     */
-    int avifLimitedToFullUV(int depth, int v);
-    /**
-     * If this returns NULL, the codec choice/flag combination is unavailable<br>
-     * Original signature : <code>char* avifCodecName(avifCodecChoice, avifCodecFlags)</code><br>
-     * <i>native declaration : avif/avif.h:618</i>
-     */
-    String avifCodecName(int choice, int requiredFlags);
-    /**
-     * Original signature : <code>avifCodecChoice avifCodecChoiceFromName(const char*)</code><br>
-     * <i>native declaration : avif/avif.h:619</i><br>
-     * @deprecated use the safer methods {@link #avifCodecChoiceFromName(java.lang.String)} and {@link #avifCodecChoiceFromName(com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    int avifCodecChoiceFromName(Pointer name);
-    /**
-     * Original signature : <code>avifCodecChoice avifCodecChoiceFromName(const char*)</code><br>
-     * <i>native declaration : avif/avif.h:619</i>
-     */
-    int avifCodecChoiceFromName(String name);
-    /**
-     * Original signature : <code>avifIO* avifIOCreateMemoryReader(const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:698</i><br>
-     * @deprecated use the safer methods {@link #avifIOCreateMemoryReader(byte[], int)} and {@link #avifIOCreateMemoryReader(com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    avifIO avifIOCreateMemoryReader(Pointer data, int size);
-    /**
-     * Original signature : <code>avifIO* avifIOCreateMemoryReader(const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:698</i>
-     */
-    avifIO avifIOCreateMemoryReader(byte[] data, int size);
-    /**
-     * Original signature : <code>avifIO* avifIOCreateFileReader(const char*)</code><br>
-     * <i>native declaration : avif/avif.h:699</i><br>
-     * @deprecated use the safer methods {@link #avifIOCreateFileReader(java.lang.String)} and {@link #avifIOCreateFileReader(com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    avifIO avifIOCreateFileReader(Pointer filename);
-    /**
-     * Original signature : <code>avifIO* avifIOCreateFileReader(const char*)</code><br>
-     * <i>native declaration : avif/avif.h:699</i>
-     */
-    avifIO avifIOCreateFileReader(String filename);
-    /**
-     * Original signature : <code>void avifIODestroy(avifIO*)</code><br>
-     * <i>native declaration : avif/avif.h:700</i>
-     */
-    void avifIODestroy(avifIO io);
-    /**
-     * Original signature : <code>char* avifProgressiveStateToString(avifProgressiveState)</code><br>
-     * <i>native declaration : avif/avif.h:794</i>
-     */
-    String avifProgressiveStateToString(int progressiveState);
-    /**
-     * Original signature : <code>avifDecoder* avifDecoderCreate()</code><br>
-     * <i>native declaration : avif/avif.h:896</i>
-     */
-    avifDecoder avifDecoderCreate();
-    /**
-     * Original signature : <code>void avifDecoderDestroy(avifDecoder*)</code><br>
-     * <i>native declaration : avif/avif.h:897</i>
-     */
-    void avifDecoderDestroy(avifDecoder decoder);
-    /**
-     * Simple interfaces to decode a single image, independent of the decoder afterwards (decoder may be destroyed).<br>
-     * call avifDecoderSetIO*() first<br>
-     * Original signature : <code>avifResult avifDecoderRead(avifDecoder*, avifImage*)</code><br>
-     * <i>native declaration : avif/avif.h:900</i>
-     */
-    int avifDecoderRead(avifDecoder decoder, avifImage image);
-    /**
-     * Original signature : <code>avifResult avifDecoderReadMemory(avifDecoder*, avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:901</i><br>
-     * @deprecated use the safer methods {@link #avifDecoderReadMemory(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, byte[], int)} and {@link #avifDecoderReadMemory(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    int avifDecoderReadMemory(avifDecoder decoder, avifImage image, Pointer data, int size);
-    /**
-     * Original signature : <code>avifResult avifDecoderReadMemory(avifDecoder*, avifImage*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:901</i>
-     */
-    int avifDecoderReadMemory(avifDecoder decoder, avifImage image, byte[] data, int size);
-    /**
-     * Original signature : <code>avifResult avifDecoderReadFile(avifDecoder*, avifImage*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:902</i><br>
-     * @deprecated use the safer methods {@link #avifDecoderReadFile(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, java.lang.String)} and {@link #avifDecoderReadFile(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    int avifDecoderReadFile(avifDecoder decoder, avifImage image, Pointer filename);
-    /**
-     * Original signature : <code>avifResult avifDecoderReadFile(avifDecoder*, avifImage*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:902</i>
-     */
-    int avifDecoderReadFile(avifDecoder decoder, avifImage image, String filename);
-    /**
-     * Parse again. Normally AVIF_DECODER_SOURCE_AUTO is enough for the common path.<br>
-     * Original signature : <code>avifResult avifDecoderSetSource(avifDecoder*, avifDecoderSource)</code><br>
-     * <i>native declaration : avif/avif.h:926</i>
-     */
-    int avifDecoderSetSource(avifDecoder decoder, int source);
-    /**
-     * avifDecoderDestroy(decoder) has no effects on 'io'.<br>
-     * Original signature : <code>void avifDecoderSetIO(avifDecoder*, avifIO*)</code><br>
-     * <i>native declaration : avif/avif.h:931</i>
-     */
-    void avifDecoderSetIO(avifDecoder decoder, avifIO io);
-    /**
-     * Original signature : <code>avifResult avifDecoderSetIOMemory(avifDecoder*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:932</i><br>
-     * @deprecated use the safer methods {@link #avifDecoderSetIOMemory(vavi.awt.image.jna.avif.avifDecoder, byte[], int)} and {@link #avifDecoderSetIOMemory(vavi.awt.image.jna.avif.avifDecoder, com.sun.jna.Pointer, int)} instead
-     */
-    @Deprecated
-    int avifDecoderSetIOMemory(avifDecoder decoder, Pointer data, int size);
-    /**
-     * Original signature : <code>avifResult avifDecoderSetIOMemory(avifDecoder*, const uint8_t*, size_t)</code><br>
-     * <i>native declaration : avif/avif.h:932</i>
-     */
-    int avifDecoderSetIOMemory(avifDecoder decoder, byte[] data, int size);
-    /**
-     * Original signature : <code>avifResult avifDecoderSetIOFile(avifDecoder*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:933</i><br>
-     * @deprecated use the safer methods {@link #avifDecoderSetIOFile(vavi.awt.image.jna.avif.avifDecoder, java.lang.String)} and {@link #avifDecoderSetIOFile(vavi.awt.image.jna.avif.avifDecoder, com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    int avifDecoderSetIOFile(avifDecoder decoder, Pointer filename);
-    /**
-     * Original signature : <code>avifResult avifDecoderSetIOFile(avifDecoder*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:933</i>
-     */
-    int avifDecoderSetIOFile(avifDecoder decoder, String filename);
-    /**
-     * Original signature : <code>avifResult avifDecoderParse(avifDecoder*)</code><br>
-     * <i>native declaration : avif/avif.h:934</i>
-     */
-    int avifDecoderParse(avifDecoder decoder);
-    /**
-     * Original signature : <code>avifResult avifDecoderNextImage(avifDecoder*)</code><br>
-     * <i>native declaration : avif/avif.h:935</i>
-     */
-    int avifDecoderNextImage(avifDecoder decoder);
-    /**
-     * Original signature : <code>avifResult avifDecoderNthImage(avifDecoder*, uint32_t)</code><br>
-     * <i>native declaration : avif/avif.h:936</i>
-     */
-    int avifDecoderNthImage(avifDecoder decoder, int frameIndex);
-    /**
-     * Original signature : <code>avifResult avifDecoderReset(avifDecoder*)</code><br>
-     * <i>native declaration : avif/avif.h:937</i>
-     */
-    int avifDecoderReset(avifDecoder decoder);
-    /**
-     * These functions may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
-     * Original signature : <code>avifBool avifDecoderIsKeyframe(const avifDecoder*, uint32_t)</code><br>
-     * <i>native declaration : avif/avif.h:943</i>
-     */
-    int avifDecoderIsKeyframe(avifDecoder decoder, int frameIndex);
-    /**
-     * Original signature : <code>uint32_t avifDecoderNearestKeyframe(const avifDecoder*, uint32_t)</code><br>
-     * <i>native declaration : avif/avif.h:944</i>
-     */
-    int avifDecoderNearestKeyframe(avifDecoder decoder, int frameIndex);
-    /**
-     * This function may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
-     * Original signature : <code>avifResult avifDecoderNthImageTiming(const avifDecoder*, uint32_t, avifImageTiming*)</code><br>
-     * <i>native declaration : avif/avif.h:948</i>
-     */
-    int avifDecoderNthImageTiming(avifDecoder decoder, int frameIndex, avifImageTiming outTiming);
-    /**
-     * WARNING: Experimental feature.<br>
-     * Original signature : <code>uint32_t avifDecoderDecodedRowCount(const avifDecoder*)</code><br>
-     * <i>native declaration : avif/avif.h:958</i>
-     */
-    int avifDecoderDecodedRowCount(avifDecoder decoder);
-    /**
-     * This function may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
-     * Original signature : <code>avifResult avifDecoderNthImageMaxExtent(const avifDecoder*, uint32_t, avifExtent*)</code><br>
-     * <i>native declaration : avif/avif.h:984</i>
-     */
-    int avifDecoderNthImageMaxExtent(avifDecoder decoder, int frameIndex, avifExtent outExtent);
-    /**
-     * Original signature : <code>avifEncoder* avifEncoderCreate()</code><br>
-     * <i>native declaration : avif/avif.h:1031</i>
-     */
-    avifEncoder avifEncoderCreate();
-    /**
-     * Original signature : <code>avifResult avifEncoderWrite(avifEncoder*, const avifImage*, avifRWData*)</code><br>
-     * <i>native declaration : avif/avif.h:1032</i>
-     */
-    int avifEncoderWrite(avifEncoder encoder, avifImage image, avifRWData output);
-    /**
-     * Original signature : <code>void avifEncoderDestroy(avifEncoder*)</code><br>
-     * <i>native declaration : avif/avif.h:1033</i>
-     */
-    void avifEncoderDestroy(avifEncoder encoder);
-    /**
-     * Original signature : <code>avifResult avifEncoderAddImage(avifEncoder*, const avifImage*, uint64_t, avifAddImageFlags)</code><br>
-     * <i>native declaration : avif/avif.h:1061</i>
-     */
-    int avifEncoderAddImage(avifEncoder encoder, avifImage image, long durationInTimescales, int addImageFlags);
-    /**
-     * Original signature : <code>avifResult avifEncoderAddImageGrid(avifEncoder*, uint32_t, uint32_t, const const avifImage**, avifAddImageFlags)</code><br>
-     * <i>native declaration : avif/avif.h:1062</i><br>
-     * @deprecated use the safer method {@link #avifEncoderAddImageGrid(vavi.awt.image.jna.avif.avifEncoder, int, int, vavi.awt.image.jna.avif.avifImage.ByReference[], int)} instead
-     */
-    @Deprecated
-    int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, PointerByReference cellImages, int addImageFlags);
-    /**
-     * Original signature : <code>avifResult avifEncoderAddImageGrid(avifEncoder*, uint32_t, uint32_t, const const avifImage**, avifAddImageFlags)</code><br>
-     * <i>native declaration : avif/avif.h:1062</i>
-     */
-    int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, avifImage.ByReference[] cellImages, int addImageFlags);
-    /**
-     * Original signature : <code>avifResult avifEncoderFinish(avifEncoder*, avifRWData*)</code><br>
-     * <i>native declaration : avif/avif.h:1067</i>
-     */
-    int avifEncoderFinish(avifEncoder encoder, avifRWData output);
-    /**
-     * AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION from avifEncoderWrite() or avifEncoderAddImage().<br>
-     * Original signature : <code>void avifEncoderSetCodecSpecificOption(avifEncoder*, const char*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:1075</i><br>
-     * @deprecated use the safer methods {@link #avifEncoderSetCodecSpecificOption(vavi.awt.image.jna.avif.avifEncoder, java.lang.String, java.lang.String)} and {@link #avifEncoderSetCodecSpecificOption(vavi.awt.image.jna.avif.avifEncoder, com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
-     */
-    @Deprecated
-    void avifEncoderSetCodecSpecificOption(avifEncoder encoder, Pointer key, Pointer value);
-    /**
-     * AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION from avifEncoderWrite() or avifEncoderAddImage().<br>
-     * Original signature : <code>void avifEncoderSetCodecSpecificOption(avifEncoder*, const char*, const char*)</code><br>
-     * <i>native declaration : avif/avif.h:1075</i>
-     */
-    void avifEncoderSetCodecSpecificOption(avifEncoder encoder, String key, String value);
-    /**
-     * Helpers<br>
-     * Original signature : <code>avifBool avifImageUsesU16(const avifImage*)</code><br>
-     * <i>native declaration : avif/avif.h:1078</i>
-     */
-    int avifImageUsesU16(avifImage image);
-    /**
-     * either the brand 'avif' or 'avis' (or both), without performing any allocations.<br>
-     * Original signature : <code>avifBool avifPeekCompatibleFileType(const avifROData*)</code><br>
-     * <i>native declaration : avif/avif.h:1082</i>
-     */
-    int avifPeekCompatibleFileType(avifROData input);
-    class avifCodecSpecificOptions extends PointerType {
-        public avifCodecSpecificOptions(Pointer address) {
-            super(address);
-        }
-        public avifCodecSpecificOptions() {
-            super();
-        }
-    }
-    class avifDecoderData extends PointerType {
-        public avifDecoderData(Pointer address) {
-            super(address);
-        }
-        public avifDecoderData() {
-            super();
-        }
-    }
-    class avifEncoderData extends PointerType {
-        public avifEncoderData(Pointer address) {
-            super(address);
-        }
-        public avifEncoderData() {
-            super();
-        }
-    }
-    int AVIF_PLANES_ALL = 0xff;
-    int AVIF_QUALITY_DEFAULT = -1;
-    int AVIF_QUALITY_LOSSLESS = 100;
-    int AVIF_QUALITY_WORST = 0;
-    int AVIF_QUALITY_BEST = 100;
+	 * enum values
+	 */
+	interface avifChannelIndex {
+		/** <i>native declaration : avif/avif.h:129</i> */
+		int AVIF_CHAN_Y = 0;
+		/** <i>native declaration : avif/avif.h:130</i> */
+		int AVIF_CHAN_U = 1;
+		/** <i>native declaration : avif/avif.h:131</i> */
+		int AVIF_CHAN_V = 2;
+		/** <i>native declaration : avif/avif.h:134</i> */
+		int AVIF_CHAN_A = 3;
+	}
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifResult {
+		/** <i>native declaration : avif/avif.h:156</i> */
+		int AVIF_RESULT_OK = 0;
+		/** <i>native declaration : avif/avif.h:157</i> */
+		int AVIF_RESULT_UNKNOWN_ERROR = 1;
+		/** <i>native declaration : avif/avif.h:158</i> */
+		int AVIF_RESULT_INVALID_FTYP = 2;
+		/** <i>native declaration : avif/avif.h:159</i> */
+		int AVIF_RESULT_NO_CONTENT = 3;
+		/** <i>native declaration : avif/avif.h:160</i> */
+		int AVIF_RESULT_NO_YUV_FORMAT_SELECTED = 4;
+		/** <i>native declaration : avif/avif.h:161</i> */
+		int AVIF_RESULT_REFORMAT_FAILED = 5;
+		/** <i>native declaration : avif/avif.h:162</i> */
+		int AVIF_RESULT_UNSUPPORTED_DEPTH = 6;
+		/** <i>native declaration : avif/avif.h:163</i> */
+		int AVIF_RESULT_ENCODE_COLOR_FAILED = 7;
+		/** <i>native declaration : avif/avif.h:164</i> */
+		int AVIF_RESULT_ENCODE_ALPHA_FAILED = 8;
+		/** <i>native declaration : avif/avif.h:165</i> */
+		int AVIF_RESULT_BMFF_PARSE_FAILED = 9;
+		/** <i>native declaration : avif/avif.h:166</i> */
+		int AVIF_RESULT_MISSING_IMAGE_ITEM = 10;
+		/** <i>native declaration : avif/avif.h:167</i> */
+		int AVIF_RESULT_DECODE_COLOR_FAILED = 11;
+		/** <i>native declaration : avif/avif.h:168</i> */
+		int AVIF_RESULT_DECODE_ALPHA_FAILED = 12;
+		/** <i>native declaration : avif/avif.h:169</i> */
+		int AVIF_RESULT_COLOR_ALPHA_SIZE_MISMATCH = 13;
+		/** <i>native declaration : avif/avif.h:170</i> */
+		int AVIF_RESULT_ISPE_SIZE_MISMATCH = 14;
+		/** <i>native declaration : avif/avif.h:171</i> */
+		int AVIF_RESULT_NO_CODEC_AVAILABLE = 15;
+		/** <i>native declaration : avif/avif.h:172</i> */
+		int AVIF_RESULT_NO_IMAGES_REMAINING = 16;
+		/** <i>native declaration : avif/avif.h:173</i> */
+		int AVIF_RESULT_INVALID_EXIF_PAYLOAD = 17;
+		/** <i>native declaration : avif/avif.h:174</i> */
+		int AVIF_RESULT_INVALID_IMAGE_GRID = 18;
+		/** <i>native declaration : avif/avif.h:175</i> */
+		int AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION = 19;
+		/** <i>native declaration : avif/avif.h:176</i> */
+		int AVIF_RESULT_TRUNCATED_DATA = 20;
+		/**
+		 * the avifIO field of avifDecoder is not set<br>
+		 * <i>native declaration : avif/avif.h:177</i>
+		 */
+		int AVIF_RESULT_IO_NOT_SET = 21;
+		/** <i>native declaration : avif/avif.h:178</i> */
+		int AVIF_RESULT_IO_ERROR = 22;
+		/**
+		 * similar to EAGAIN/EWOULDBLOCK, this means the avifIO doesn't have necessary data available yet<br>
+		 * <i>native declaration : avif/avif.h:179</i>
+		 */
+		int AVIF_RESULT_WAITING_ON_IO = 23;
+		/**
+		 * an argument passed into this function is invalid<br>
+		 * <i>native declaration : avif/avif.h:180</i>
+		 */
+		int AVIF_RESULT_INVALID_ARGUMENT = 24;
+		/**
+		 * a requested code path is not (yet) implemented<br>
+		 * <i>native declaration : avif/avif.h:181</i>
+		 */
+		int AVIF_RESULT_NOT_IMPLEMENTED = 25;
+		/** <i>native declaration : avif/avif.h:182</i> */
+		int AVIF_RESULT_OUT_OF_MEMORY = 26;
+		/**
+		 * a setting that can't change is changed during encoding<br>
+		 * <i>native declaration : avif/avif.h:183</i>
+		 */
+		int AVIF_RESULT_CANNOT_CHANGE_SETTING = 27;
+		/**
+		 * the image is incompatible with already encoded images<br>
+		 * <i>native declaration : avif/avif.h:184</i>
+		 */
+		int AVIF_RESULT_INCOMPATIBLE_IMAGE = 28;
+		/** <i>native declaration : avif/avif.h:192</i> */
+		int AVIF_RESULT_NO_AV1_ITEMS_FOUND = (int)AvifLibrary.avifResult.AVIF_RESULT_MISSING_IMAGE_ITEM;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifHeaderFormat {
+		/** <i>native declaration : avif/avif.h:203</i> */
+		int AVIF_HEADER_FULL = 0;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifPixelFormat {
+		/** <i>native declaration : avif/avif.h:259</i> */
+		int AVIF_PIXEL_FORMAT_NONE = 0;
+		/** <i>native declaration : avif/avif.h:261</i> */
+		int AVIF_PIXEL_FORMAT_YUV444 = 1;
+		/** <i>native declaration : avif/avif.h:262</i> */
+		int AVIF_PIXEL_FORMAT_YUV422 = 2;
+		/** <i>native declaration : avif/avif.h:263</i> */
+		int AVIF_PIXEL_FORMAT_YUV420 = 3;
+		/** <i>native declaration : avif/avif.h:264</i> */
+		int AVIF_PIXEL_FORMAT_YUV400 = 4;
+		/** <i>native declaration : avif/avif.h:265</i> */
+		int AVIF_PIXEL_FORMAT_COUNT = 5;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifChromaSamplePosition {
+		/** <i>native declaration : avif/avif.h:289</i> */
+		int AVIF_CHROMA_SAMPLE_POSITION_UNKNOWN = 0;
+		/** <i>native declaration : avif/avif.h:290</i> */
+		int AVIF_CHROMA_SAMPLE_POSITION_VERTICAL = 1;
+		/** <i>native declaration : avif/avif.h:291</i> */
+		int AVIF_CHROMA_SAMPLE_POSITION_COLOCATED = 2;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifRange {
+		/** <i>native declaration : avif/avif.h:299</i> */
+		int AVIF_RANGE_LIMITED = 0;
+		/** <i>native declaration : avif/avif.h:300</i> */
+		int AVIF_RANGE_FULL = 1;
+	};
+	int AVIF_COLOR_PRIMARIES_UNKNOWN = 0;
+	int AVIF_COLOR_PRIMARIES_BT709 = 1;
+	int AVIF_COLOR_PRIMARIES_SRGB = 1;
+	int AVIF_COLOR_PRIMARIES_IEC61966_2_4 = 1;
+	int AVIF_COLOR_PRIMARIES_UNSPECIFIED = 2;
+	int AVIF_COLOR_PRIMARIES_BT470M = 4;
+	int AVIF_COLOR_PRIMARIES_BT470BG = 5;
+	int AVIF_COLOR_PRIMARIES_BT601 = 6;
+	int AVIF_COLOR_PRIMARIES_SMPTE240 = 7;
+	int AVIF_COLOR_PRIMARIES_GENERIC_FILM = 8;
+	int AVIF_COLOR_PRIMARIES_BT2020 = 9;
+	int AVIF_COLOR_PRIMARIES_BT2100 = 9;
+	int AVIF_COLOR_PRIMARIES_XYZ = 10;
+	int AVIF_COLOR_PRIMARIES_SMPTE431 = 11;
+	int AVIF_COLOR_PRIMARIES_SMPTE432 = 12;
+	int AVIF_COLOR_PRIMARIES_DCI_P3 = 12;
+	int AVIF_COLOR_PRIMARIES_EBU3213 = 22;
+	int AVIF_TRANSFER_CHARACTERISTICS_UNKNOWN = 0;
+	int AVIF_TRANSFER_CHARACTERISTICS_BT709 = 1;
+	int AVIF_TRANSFER_CHARACTERISTICS_UNSPECIFIED = 2;
+	/** 2.2 gamma */
+	int AVIF_TRANSFER_CHARACTERISTICS_BT470M = 4;
+	/** 2.8 gamma */
+	int AVIF_TRANSFER_CHARACTERISTICS_BT470BG = 5;
+	int AVIF_TRANSFER_CHARACTERISTICS_BT601 = 6;
+	int AVIF_TRANSFER_CHARACTERISTICS_SMPTE240 = 7;
+	int AVIF_TRANSFER_CHARACTERISTICS_LINEAR = 8;
+	int AVIF_TRANSFER_CHARACTERISTICS_LOG100 = 9;
+	int AVIF_TRANSFER_CHARACTERISTICS_LOG100_SQRT10 = 10;
+	int AVIF_TRANSFER_CHARACTERISTICS_IEC61966 = 11;
+	int AVIF_TRANSFER_CHARACTERISTICS_BT1361 = 12;
+	int AVIF_TRANSFER_CHARACTERISTICS_SRGB = 13;
+	int AVIF_TRANSFER_CHARACTERISTICS_BT2020_10BIT = 14;
+	int AVIF_TRANSFER_CHARACTERISTICS_BT2020_12BIT = 15;
+	/** Perceptual Quantizer (HDR); BT.2100 PQ */
+	int AVIF_TRANSFER_CHARACTERISTICS_PQ = 16;
+	int AVIF_TRANSFER_CHARACTERISTICS_SMPTE2084 = 16;
+	int AVIF_TRANSFER_CHARACTERISTICS_SMPTE428 = 17;
+	/** Hybrid Log-Gamma (HDR); ARIB STD-B67; BT.2100 HLG */
+	int AVIF_TRANSFER_CHARACTERISTICS_HLG = 18;
+	int AVIF_MATRIX_COEFFICIENTS_IDENTITY = 0;
+	int AVIF_MATRIX_COEFFICIENTS_BT709 = 1;
+	int AVIF_MATRIX_COEFFICIENTS_UNSPECIFIED = 2;
+	int AVIF_MATRIX_COEFFICIENTS_FCC = 4;
+	int AVIF_MATRIX_COEFFICIENTS_BT470BG = 5;
+	int AVIF_MATRIX_COEFFICIENTS_BT601 = 6;
+	int AVIF_MATRIX_COEFFICIENTS_SMPTE240 = 7;
+	int AVIF_MATRIX_COEFFICIENTS_YCGCO = 8;
+	int AVIF_MATRIX_COEFFICIENTS_BT2020_NCL = 9;
+	int AVIF_MATRIX_COEFFICIENTS_BT2020_CL = 10;
+	int AVIF_MATRIX_COEFFICIENTS_SMPTE2085 = 11;
+	int AVIF_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL = 12;
+	int AVIF_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL = 13;
+	int AVIF_MATRIX_COEFFICIENTS_ICTCP = 14;
+	int AVIF_MATRIX_COEFFICIENTS_LAST = 15;
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifTransformFlag {
+		/** <i>native declaration : avif/avif.h:421</i> */
+		int AVIF_TRANSFORM_NONE = 0;
+		/** <i>native declaration : avif/avif.h:423</i> */
+		int AVIF_TRANSFORM_PASP = (1 << 0);
+		/** <i>native declaration : avif/avif.h:424</i> */
+		int AVIF_TRANSFORM_CLAP = (1 << 1);
+		/** <i>native declaration : avif/avif.h:425</i> */
+		int AVIF_TRANSFORM_IROT = (1 << 2);
+		/** <i>native declaration : avif/avif.h:426</i> */
+		int AVIF_TRANSFORM_IMIR = (1 << 3);
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifRGBFormat {
+		/** <i>native declaration : avif/avif.h:859</i> */
+		int AVIF_RGB_FORMAT_RGB = 0;
+		/**
+		 * This is the default format set in avifRGBImageSetDefaults().<br>
+		 * <i>native declaration : avif/avif.h:860</i>
+		 */
+		int AVIF_RGB_FORMAT_RGBA = 1;
+		/** <i>native declaration : avif/avif.h:861</i> */
+		int AVIF_RGB_FORMAT_ARGB = 2;
+		/** <i>native declaration : avif/avif.h:862</i> */
+		int AVIF_RGB_FORMAT_BGR = 3;
+		/** <i>native declaration : avif/avif.h:863</i> */
+		int AVIF_RGB_FORMAT_BGRA = 4;
+		/** <i>native declaration : avif/avif.h:864</i> */
+		int AVIF_RGB_FORMAT_ABGR = 5;
+		/** <i>native declaration : avif/avif.h:874</i> */
+		int AVIF_RGB_FORMAT_RGB_565 = 6;
+		/** <i>native declaration : avif/avif.h:875</i> */
+		int AVIF_RGB_FORMAT_COUNT = 7;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifChromaUpsampling {
+		/**
+		 * Chooses best trade off of speed/quality (uses BILINEAR libyuv if available,<br>
+		 * <i>native declaration : avif/avif.h:882</i>
+		 */
+		int AVIF_CHROMA_UPSAMPLING_AUTOMATIC = 0;
+		/**
+		 * Chooses speed over quality (same as NEAREST)<br>
+		 * <i>native declaration : avif/avif.h:884</i>
+		 */
+		int AVIF_CHROMA_UPSAMPLING_FASTEST = 1;
+		/**
+		 * Chooses the best quality upsampling, given settings (same as BILINEAR)<br>
+		 * <i>native declaration : avif/avif.h:885</i>
+		 */
+		int AVIF_CHROMA_UPSAMPLING_BEST_QUALITY = 2;
+		/**
+		 * Uses nearest-neighbor filter<br>
+		 * <i>native declaration : avif/avif.h:886</i>
+		 */
+		int AVIF_CHROMA_UPSAMPLING_NEAREST = 3;
+		/**
+		 * Uses bilinear filter<br>
+		 * <i>native declaration : avif/avif.h:887</i>
+		 */
+		int AVIF_CHROMA_UPSAMPLING_BILINEAR = 4;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifChromaDownsampling {
+		/**
+		 * Chooses best trade off of speed/quality (same as AVERAGE)<br>
+		 * <i>native declaration : avif/avif.h:892</i>
+		 */
+		int AVIF_CHROMA_DOWNSAMPLING_AUTOMATIC = 0;
+		/**
+		 * Chooses speed over quality (same as AVERAGE)<br>
+		 * <i>native declaration : avif/avif.h:893</i>
+		 */
+		int AVIF_CHROMA_DOWNSAMPLING_FASTEST = 1;
+		/**
+		 * Chooses the best quality upsampling (same as AVERAGE)<br>
+		 * <i>native declaration : avif/avif.h:894</i>
+		 */
+		int AVIF_CHROMA_DOWNSAMPLING_BEST_QUALITY = 2;
+		/**
+		 * Uses averaging filter<br>
+		 * <i>native declaration : avif/avif.h:895</i>
+		 */
+		int AVIF_CHROMA_DOWNSAMPLING_AVERAGE = 3;
+		/**
+		 * Uses sharp yuv filter (libsharpyuv), available for 4:2:0 only, ignored for 4:2:2<br>
+		 * <i>native declaration : avif/avif.h:896</i>
+		 */
+		int AVIF_CHROMA_DOWNSAMPLING_SHARP_YUV = 4;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifCodecChoice {
+		/** <i>native declaration : avif/avif.h:958</i> */
+		int AVIF_CODEC_CHOICE_AUTO = 0;
+		/** <i>native declaration : avif/avif.h:959</i> */
+		int AVIF_CODEC_CHOICE_AOM = 1;
+		/**
+		 * Decode only<br>
+		 * <i>native declaration : avif/avif.h:960</i>
+		 */
+		int AVIF_CODEC_CHOICE_DAV1D = 2;
+		/**
+		 * Decode only<br>
+		 * <i>native declaration : avif/avif.h:961</i>
+		 */
+		int AVIF_CODEC_CHOICE_LIBGAV1 = 3;
+		/**
+		 * Encode only<br>
+		 * <i>native declaration : avif/avif.h:962</i>
+		 */
+		int AVIF_CODEC_CHOICE_RAV1E = 4;
+		/**
+		 * Encode only<br>
+		 * <i>native declaration : avif/avif.h:963</i>
+		 */
+		int AVIF_CODEC_CHOICE_SVT = 5;
+		/**
+		 * Experimental (AV2)<br>
+		 * <i>native declaration : avif/avif.h:964</i>
+		 */
+		int AVIF_CODEC_CHOICE_AVM = 6;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifCodecFlag {
+		/** <i>native declaration : avif/avif.h:969</i> */
+		int AVIF_CODEC_FLAG_CAN_DECODE = (1 << 0);
+		/** <i>native declaration : avif/avif.h:970</i> */
+		int AVIF_CODEC_FLAG_CAN_ENCODE = (1 << 1);
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifStrictFlag {
+		/** <i>native declaration : avif/avif.h:1047</i> */
+		int AVIF_STRICT_DISABLED = 0;
+		/** <i>native declaration : avif/avif.h:1053</i> */
+		int AVIF_STRICT_PIXI_REQUIRED = (1 << 0);
+		/** <i>native declaration : avif/avif.h:1058</i> */
+		int AVIF_STRICT_CLAP_VALID = (1 << 1);
+		/** <i>native declaration : avif/avif.h:1066</i> */
+		int AVIF_STRICT_ALPHA_ISPE_REQUIRED = (1 << 2);
+		/** <i>native declaration : avif/avif.h:1069</i> */
+		int AVIF_STRICT_ENABLED = (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_PIXI_REQUIRED | (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_CLAP_VALID | (int)AvifLibrary.avifStrictFlag.AVIF_STRICT_ALPHA_ISPE_REQUIRED;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifDecoderSource {
+		/** <i>native declaration : avif/avif.h:1089</i> */
+		int AVIF_DECODER_SOURCE_AUTO = 0;
+		/** <i>native declaration : avif/avif.h:1093</i> */
+		int AVIF_DECODER_SOURCE_PRIMARY_ITEM = 1;
+		/** <i>native declaration : avif/avif.h:1097</i> */
+		int AVIF_DECODER_SOURCE_TRACKS = 2;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifProgressiveState {
+		/** <i>native declaration : avif/avif.h:1117</i> */
+		int AVIF_PROGRESSIVE_STATE_UNAVAILABLE = 0;
+		/** <i>native declaration : avif/avif.h:1122</i> */
+		int AVIF_PROGRESSIVE_STATE_AVAILABLE = 1;
+		/** <i>native declaration : avif/avif.h:1129</i> */
+		int AVIF_PROGRESSIVE_STATE_ACTIVE = 2;
+	};
+	/**
+	 * <i>native declaration : avif/avif.h</i><br>
+	 * enum values
+	 */
+	interface avifAddImageFlag {
+		/** <i>native declaration : avif/avif.h:1465</i> */
+		int AVIF_ADD_IMAGE_FLAG_NONE = 0;
+		/** <i>native declaration : avif/avif.h:1468</i> */
+		int AVIF_ADD_IMAGE_FLAG_FORCE_KEYFRAME = (1 << 0);
+		/** <i>native declaration : avif/avif.h:1473</i> */
+		int AVIF_ADD_IMAGE_FLAG_SINGLE = (1 << 1);
+	};
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_VERSION_MAJOR = (int)1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_VERSION_MINOR = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_VERSION_PATCH = (int)3;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_VERSION_DEVEL = (int)1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_VERSION = (int)((1 * 1000000) + (0 * 10000) + (3 * 100) + 1);
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_TRUE = (int)1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_FALSE = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_DIAGNOSTICS_ERROR_BUFFER_SIZE = (int)256;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_DEFAULT_IMAGE_SIZE_LIMIT = (int)(16384 * 16384);
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_DEFAULT_IMAGE_DIMENSION_LIMIT = (int)32768;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_DEFAULT_IMAGE_COUNT_LIMIT = (int)(12 * 3600 * 60);
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUALITY_DEFAULT = (int)-1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUALITY_LOSSLESS = (int)100;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUALITY_WORST = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUALITY_BEST = (int)100;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUANTIZER_LOSSLESS = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUANTIZER_BEST_QUALITY = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_QUANTIZER_WORST_QUALITY = (int)63;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_PLANE_COUNT_YUV = (int)3;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_SPEED_DEFAULT = (int)-1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_SPEED_SLOWEST = (int)0;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_SPEED_FASTEST = (int)10;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_REPETITION_COUNT_INFINITE = (int)-1;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_REPETITION_COUNT_UNKNOWN = (int)-2;
+	/** <i>native declaration : avif/avif.h</i> */
+	int AVIF_MAX_AV1_LAYER_COUNT = (int)4;
+	/** <i>native declaration : avif/avif.h</i> */
+	public interface avifIODestroyFunc extends Callback {
+		void apply(avifIO io);
+	};
+	/** <i>native declaration : avif/avif.h</i> */
+	public interface avifIOReadFunc extends Callback {
+		int apply(avifIO io, int readFlags, long offset, NativeLong size, avifROData out);
+	};
+	/** <i>native declaration : avif/avif.h</i> */
+	public interface avifIOWriteFunc extends Callback {
+		int apply(avifIO io, int writeFlags, long offset, Pointer data, NativeLong size);
+	};
+	/**
+	 * Version<br>
+	 * Original signature : <code>char* avifVersion()</code><br>
+	 * <i>native declaration : avif/avif.h:140</i>
+	 */
+	String avifVersion();
+	/**
+	 * Original signature : <code>void avifCodecVersions(char[256])</code><br>
+	 * <i>native declaration : avif/avif.h:141</i><br>
+	 * @deprecated use the safer methods {@link #avifCodecVersions(java.nio.ByteBuffer)} and {@link #avifCodecVersions(com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	void avifCodecVersions(Pointer outBuffer);
+	/**
+	 * Original signature : <code>void avifCodecVersions(char[256])</code><br>
+	 * <i>native declaration : avif/avif.h:141</i>
+	 */
+	void avifCodecVersions(ByteBuffer outBuffer);
+	/**
+	 * returns 0 if libavif wasn't compiled with libyuv support<br>
+	 * Original signature : <code>int avifLibYUVVersion()</code><br>
+	 * <i>native declaration : avif/avif.h:142</i>
+	 */
+	int avifLibYUVVersion();
+	/**
+	 * Returns NULL on memory allocation failure.<br>
+	 * Original signature : <code>void* avifAlloc(size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:148</i>
+	 */
+	Pointer avifAlloc(NativeLong size);
+	/**
+	 * Original signature : <code>void avifFree(void*)</code><br>
+	 * <i>native declaration : avif/avif.h:149</i>
+	 */
+	void avifFree(Pointer p);
+	/**
+	 * Original signature : <code>char* avifResultToString(avifResult)</code><br>
+	 * <i>native declaration : avif/avif.h:195</i>
+	 */
+	String avifResultToString(int result);
+	/**
+	 * If AVIF_RESULT_OUT_OF_MEMORY is returned, raw is left unchanged.<br>
+	 * Original signature : <code>avifResult avifRWDataRealloc(avifRWData*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:236</i>
+	 */
+	int avifRWDataRealloc(avifRWData raw, NativeLong newSize);
+	/**
+	 * Original signature : <code>avifResult avifRWDataSet(avifRWData*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:237</i><br>
+	 * @deprecated use the safer methods {@link #avifRWDataSet(vavi.awt.image.jna.avif.avifRWData, byte[], NativeLong)} and {@link #avifRWDataSet(vavi.awt.image.jna.avif.avifRWData, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifRWDataSet(avifRWData raw, Pointer data, NativeLong len);
+	/**
+	 * Original signature : <code>avifResult avifRWDataSet(avifRWData*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:237</i>
+	 */
+	int avifRWDataSet(avifRWData raw, byte data[], NativeLong len);
+	/**
+	 * Original signature : <code>void avifRWDataFree(avifRWData*)</code><br>
+	 * <i>native declaration : avif/avif.h:238</i>
+	 */
+	void avifRWDataFree(avifRWData raw);
+	/**
+	 * Validates the first bytes of the Exif payload and finds the TIFF header offset (up to UINT32_MAX).<br>
+	 * Original signature : <code>avifResult avifGetExifTiffHeaderOffset(const uint8_t*, size_t, size_t*)</code><br>
+	 * <i>native declaration : avif/avif.h:244</i><br>
+	 * @deprecated use the safer methods {@link #avifGetExifTiffHeaderOffset(byte[], NativeLong, NativeLongByReference)} and {@link #avifGetExifTiffHeaderOffset(com.sun.jna.Pointer, NativeLong, NativeLongByReference)} instead
+	 */
+	@Deprecated 
+	int avifGetExifTiffHeaderOffset(Pointer exif, NativeLong exifSize, NativeLongByReference offset);
+	/**
+	 * Validates the first bytes of the Exif payload and finds the TIFF header offset (up to UINT32_MAX).<br>
+	 * Original signature : <code>avifResult avifGetExifTiffHeaderOffset(const uint8_t*, size_t, size_t*)</code><br>
+	 * <i>native declaration : avif/avif.h:244</i>
+	 */
+	int avifGetExifTiffHeaderOffset(byte exif[], NativeLong exifSize, NativeLongByReference offset);
+	/**
+	 * If the offset is set to exifSize, there was no parsing error but no orientation tag was found.<br>
+	 * Original signature : <code>avifResult avifGetExifOrientationOffset(const uint8_t*, size_t, size_t*)</code><br>
+	 * <i>native declaration : avif/avif.h:247</i><br>
+	 * @deprecated use the safer methods {@link #avifGetExifOrientationOffset(byte[], NativeLong, NativeLongByReference)} and {@link #avifGetExifOrientationOffset(com.sun.jna.Pointer, NativeLong, NativeLongByReference)} instead
+	 */
+	@Deprecated 
+	int avifGetExifOrientationOffset(Pointer exif, NativeLong exifSize, NativeLongByReference offset);
+	/**
+	 * If the offset is set to exifSize, there was no parsing error but no orientation tag was found.<br>
+	 * Original signature : <code>avifResult avifGetExifOrientationOffset(const uint8_t*, size_t, size_t*)</code><br>
+	 * <i>native declaration : avif/avif.h:247</i>
+	 */
+	int avifGetExifOrientationOffset(byte exif[], NativeLong exifSize, NativeLongByReference offset);
+	/**
+	 * Original signature : <code>char* avifPixelFormatToString(avifPixelFormat)</code><br>
+	 * <i>native declaration : avif/avif.h:267</i>
+	 */
+	String avifPixelFormatToString(int format);
+	/**
+	 * an AV1 implementation that only supports profile 0 to hardcode subsampling_x and subsampling_y to 1.<br>
+	 * Original signature : <code>void avifGetPixelFormatInfo(avifPixelFormat, avifPixelFormatInfo*)</code><br>
+	 * <i>native declaration : avif/avif.h:282</i>
+	 */
+	void avifGetPixelFormatInfo(int format, avifPixelFormatInfo info);
+	/**
+	 * outPrimaries: rX, rY, gX, gY, bX, bY, wX, wY<br>
+	 * Original signature : <code>void avifColorPrimariesGetValues(avifColorPrimaries, float[8])</code><br>
+	 * <i>native declaration : avif/avif.h:331</i><br>
+	 * @deprecated use the safer methods {@link #avifColorPrimariesGetValues(short, java.nio.FloatBuffer)} and {@link #avifColorPrimariesGetValues(short, com.sun.jna.ptr.FloatByReference)} instead
+	 */
+	@Deprecated 
+	void avifColorPrimariesGetValues(short acp, FloatByReference outPrimaries);
+	/**
+	 * outPrimaries: rX, rY, gX, gY, bX, bY, wX, wY<br>
+	 * Original signature : <code>void avifColorPrimariesGetValues(avifColorPrimaries, float[8])</code><br>
+	 * <i>native declaration : avif/avif.h:331</i>
+	 */
+	void avifColorPrimariesGetValues(short acp, FloatBuffer outPrimaries);
+	/**
+	 * Original signature : <code>avifColorPrimaries avifColorPrimariesFind(const float[8], const char**)</code><br>
+	 * <i>native declaration : avif/avif.h:332</i><br>
+	 * @deprecated use the safer methods {@link #avifColorPrimariesFind(float[], java.lang.String[])} and {@link #avifColorPrimariesFind(com.sun.jna.ptr.FloatByReference, com.sun.jna.ptr.PointerByReference)} instead
+	 */
+	@Deprecated 
+	short avifColorPrimariesFind(FloatByReference inPrimaries, PointerByReference outName);
+	/**
+	 * Original signature : <code>avifColorPrimaries avifColorPrimariesFind(const float[8], const char**)</code><br>
+	 * <i>native declaration : avif/avif.h:332</i>
+	 */
+	short avifColorPrimariesFind(float inPrimaries[], String outName[]);
+	/**
+	 * to that value and returns AVIF_RESULT_OK. Returns an error otherwise.<br>
+	 * Original signature : <code>avifResult avifTransferCharacteristicsGetGamma(avifTransferCharacteristics, float*)</code><br>
+	 * <i>native declaration : avif/avif.h:362</i><br>
+	 * @deprecated use the safer methods {@link #avifTransferCharacteristicsGetGamma(short, java.nio.FloatBuffer)} and {@link #avifTransferCharacteristicsGetGamma(short, com.sun.jna.ptr.FloatByReference)} instead
+	 */
+	@Deprecated 
+	int avifTransferCharacteristicsGetGamma(short atc, FloatByReference gamma);
+	/**
+	 * to that value and returns AVIF_RESULT_OK. Returns an error otherwise.<br>
+	 * Original signature : <code>avifResult avifTransferCharacteristicsGetGamma(avifTransferCharacteristics, float*)</code><br>
+	 * <i>native declaration : avif/avif.h:362</i>
+	 */
+	int avifTransferCharacteristicsGetGamma(short atc, FloatBuffer gamma);
+	/**
+	 * Original signature : <code>avifTransferCharacteristics avifTransferCharacteristicsFindByGamma(float)</code><br>
+	 * <i>native declaration : avif/avif.h:363</i>
+	 */
+	short avifTransferCharacteristicsFindByGamma(float gamma);
+	/**
+	 * Original signature : <code>void avifDiagnosticsClearError(avifDiagnostics*)</code><br>
+	 * <i>native declaration : avif/avif.h:405</i>
+	 */
+	void avifDiagnosticsClearError(avifDiagnostics diag);
+	/**
+	 * values are not guaranteed to be complete or correct and should not be used.<br>
+	 * Original signature : <code>avifBool avifCropRectConvertCleanApertureBox(avifCropRect*, const avifCleanApertureBox*, uint32_t, uint32_t, avifPixelFormat, avifDiagnostics*)</code><br>
+	 * <i>native declaration : avif/avif.h:498</i>
+	 */
+	int avifCropRectConvertCleanApertureBox(avifCropRect cropRect, avifCleanApertureBox clap, int imageW, int imageH, int yuvFormat, avifDiagnostics diag);
+	/**
+	 * Original signature : <code>avifBool avifCleanApertureBoxConvertCropRect(avifCleanApertureBox*, const avifCropRect*, uint32_t, uint32_t, avifPixelFormat, avifDiagnostics*)</code><br>
+	 * <i>native declaration : avif/avif.h:504</i>
+	 */
+	int avifCleanApertureBoxConvertCropRect(avifCleanApertureBox clap, avifCropRect cropRect, int imageW, int imageH, int yuvFormat, avifDiagnostics diag);
+	/**
+	 * avifImageCreate() and avifImageCreateEmpty() return NULL if arguments are invalid or if a memory allocation failed.<br>
+	 * Original signature : <code>avifImage* avifImageCreate(uint32_t, uint32_t, uint32_t, avifPixelFormat)</code><br>
+	 * <i>native declaration : avif/avif.h:777</i>
+	 */
+	avifImage avifImageCreate(int width, int height, int depth, int yuvFormat);
+	/**
+	 * helper for making an image to decode into<br>
+	 * Original signature : <code>avifImage* avifImageCreateEmpty()</code><br>
+	 * <i>native declaration : avif/avif.h:778</i>
+	 */
+	avifImage avifImageCreateEmpty();
+	/**
+	 * and if AVIF_ENABLE_EXPERIMENTAL_GAIN_MAP is defined.<br>
+	 * Original signature : <code>avifResult avifImageCopy(avifImage*, const avifImage*, avifPlanesFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:781</i>
+	 */
+	int avifImageCopy(avifImage dstImage, avifImage srcImage, int planes);
+	/**
+	 * Ignores the gainMap field (which exists only if AVIF_ENABLE_EXPERIMENTAL_GAIN_MAP is defined).<br>
+	 * Original signature : <code>avifResult avifImageSetViewRect(avifImage*, const avifImage*, const avifCropRect*)</code><br>
+	 * <i>native declaration : avif/avif.h:784</i>
+	 */
+	int avifImageSetViewRect(avifImage dstImage, avifImage srcImage, avifCropRect rect);
+	/**
+	 * Original signature : <code>void avifImageDestroy(avifImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:785</i>
+	 */
+	void avifImageDestroy(avifImage image);
+	/**
+	 * Original signature : <code>avifResult avifImageSetProfileICC(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:787</i><br>
+	 * @deprecated use the safer methods {@link #avifImageSetProfileICC(vavi.awt.image.jna.avif.avifImage, byte[], NativeLong)} and {@link #avifImageSetProfileICC(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifImageSetProfileICC(avifImage image, Pointer icc, NativeLong iccSize);
+	/**
+	 * Original signature : <code>avifResult avifImageSetProfileICC(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:787</i>
+	 */
+	int avifImageSetProfileICC(avifImage image, byte icc[], NativeLong iccSize);
+	/**
+	 * Warning: If the Exif payload is set and invalid, avifEncoderWrite() may return AVIF_RESULT_INVALID_EXIF_PAYLOAD.<br>
+	 * Original signature : <code>avifResult avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:792</i><br>
+	 * @deprecated use the safer methods {@link #avifImageSetMetadataExif(vavi.awt.image.jna.avif.avifImage, byte[], NativeLong)} and {@link #avifImageSetMetadataExif(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifImageSetMetadataExif(avifImage image, Pointer exif, NativeLong exifSize);
+	/**
+	 * Warning: If the Exif payload is set and invalid, avifEncoderWrite() may return AVIF_RESULT_INVALID_EXIF_PAYLOAD.<br>
+	 * Original signature : <code>avifResult avifImageSetMetadataExif(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:792</i>
+	 */
+	int avifImageSetMetadataExif(avifImage image, byte exif[], NativeLong exifSize);
+	/**
+	 * Sets XMP metadata.<br>
+	 * Original signature : <code>avifResult avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:794</i><br>
+	 * @deprecated use the safer methods {@link #avifImageSetMetadataXMP(vavi.awt.image.jna.avif.avifImage, byte[], NativeLong)} and {@link #avifImageSetMetadataXMP(vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifImageSetMetadataXMP(avifImage image, Pointer xmp, NativeLong xmpSize);
+	/**
+	 * Sets XMP metadata.<br>
+	 * Original signature : <code>avifResult avifImageSetMetadataXMP(avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:794</i>
+	 */
+	int avifImageSetMetadataXMP(avifImage image, byte xmp[], NativeLong xmpSize);
+	/**
+	 * AVIF_ENABLE_EXPERIMENTAL_GAIN_MAP is defined).<br>
+	 * Ignores any pre-existing planes<br>
+	 * Original signature : <code>avifResult avifImageAllocatePlanes(avifImage*, avifPlanesFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:798</i>
+	 */
+	int avifImageAllocatePlanes(avifImage image, int planes);
+	/**
+	 * Ignores already-freed planes<br>
+	 * Original signature : <code>void avifImageFreePlanes(avifImage*, avifPlanesFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:799</i>
+	 */
+	void avifImageFreePlanes(avifImage image, int planes);
+	/**
+	 * Original signature : <code>void avifImageStealPlanes(avifImage*, avifImage*, avifPlanesFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:800</i>
+	 */
+	void avifImageStealPlanes(avifImage dstImage, avifImage srcImage, int planes);
+	/**
+	 * dstWidth*dstHeight should be <= AVIF_DEFAULT_IMAGE_SIZE_LIMIT.<br>
+	 * Original signature : <code>avifResult avifImageScale(avifImage*, uint32_t, uint32_t, avifDiagnostics*)</code><br>
+	 * <i>native declaration : avif/avif.h:831</i>
+	 */
+	int avifImageScale(avifImage image, int dstWidth, int dstHeight, avifDiagnostics diag);
+	/**
+	 * Original signature : <code>uint32_t avifRGBFormatChannelCount(avifRGBFormat)</code><br>
+	 * <i>native declaration : avif/avif.h:877</i>
+	 */
+	int avifRGBFormatChannelCount(int format);
+	/**
+	 * Original signature : <code>avifBool avifRGBFormatHasAlpha(avifRGBFormat)</code><br>
+	 * <i>native declaration : avif/avif.h:878</i>
+	 */
+	int avifRGBFormatHasAlpha(int format);
+	/**
+	 * values.<br>
+	 * Original signature : <code>void avifRGBImageSetDefaults(avifRGBImage*, const avifImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:928</i>
+	 */
+	void avifRGBImageSetDefaults(avifRGBImage rgb, avifImage image);
+	/**
+	 * Original signature : <code>uint32_t avifRGBImagePixelSize(const avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:929</i>
+	 */
+	int avifRGBImagePixelSize(avifRGBImage rgb);
+	/**
+	 * Convenience functions. If you supply your own pixels/rowBytes, you do not need to use these.<br>
+	 * Original signature : <code>avifResult avifRGBImageAllocatePixels(avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:932</i>
+	 */
+	int avifRGBImageAllocatePixels(avifRGBImage rgb);
+	/**
+	 * Original signature : <code>void avifRGBImageFreePixels(avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:933</i>
+	 */
+	void avifRGBImageFreePixels(avifRGBImage rgb);
+	/**
+	 * The main conversion functions<br>
+	 * Original signature : <code>avifResult avifImageRGBToYUV(avifImage*, const avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:936</i>
+	 */
+	int avifImageRGBToYUV(avifImage image, avifRGBImage rgb);
+	/**
+	 * Original signature : <code>avifResult avifImageYUVToRGB(const avifImage*, avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:937</i>
+	 */
+	int avifImageYUVToRGB(avifImage image, avifRGBImage rgb);
+	/**
+	 * so usually you don't need to call these. They are there for convenience.<br>
+	 * Original signature : <code>avifResult avifRGBImagePremultiplyAlpha(avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:942</i>
+	 */
+	int avifRGBImagePremultiplyAlpha(avifRGBImage rgb);
+	/**
+	 * Original signature : <code>avifResult avifRGBImageUnpremultiplyAlpha(avifRGBImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:943</i>
+	 */
+	int avifRGBImageUnpremultiplyAlpha(avifRGBImage rgb);
+	/**
+	 * YUV Utils<br>
+	 * Original signature : <code>int avifFullToLimitedY(uint32_t, int)</code><br>
+	 * <i>native declaration : avif/avif.h:948</i>
+	 */
+	int avifFullToLimitedY(int depth, int v);
+	/**
+	 * Original signature : <code>int avifFullToLimitedUV(uint32_t, int)</code><br>
+	 * <i>native declaration : avif/avif.h:949</i>
+	 */
+	int avifFullToLimitedUV(int depth, int v);
+	/**
+	 * Original signature : <code>int avifLimitedToFullY(uint32_t, int)</code><br>
+	 * <i>native declaration : avif/avif.h:950</i>
+	 */
+	int avifLimitedToFullY(int depth, int v);
+	/**
+	 * Original signature : <code>int avifLimitedToFullUV(uint32_t, int)</code><br>
+	 * <i>native declaration : avif/avif.h:951</i>
+	 */
+	int avifLimitedToFullUV(int depth, int v);
+	/**
+	 * If this returns NULL, the codec choice/flag combination is unavailable<br>
+	 * Original signature : <code>char* avifCodecName(avifCodecChoice, avifCodecFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:975</i>
+	 */
+	String avifCodecName(int choice, int requiredFlags);
+	/**
+	 * Original signature : <code>avifCodecChoice avifCodecChoiceFromName(const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:976</i><br>
+	 * @deprecated use the safer methods {@link #avifCodecChoiceFromName(java.lang.String)} and {@link #avifCodecChoiceFromName(com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	int avifCodecChoiceFromName(Pointer name);
+	/**
+	 * Original signature : <code>avifCodecChoice avifCodecChoiceFromName(const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:976</i>
+	 */
+	int avifCodecChoiceFromName(String name);
+	/**
+	 * Returns NULL if the reader cannot be allocated.<br>
+	 * Original signature : <code>avifIO* avifIOCreateMemoryReader(const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1032</i><br>
+	 * @deprecated use the safer methods {@link #avifIOCreateMemoryReader(byte[], NativeLong)} and {@link #avifIOCreateMemoryReader(com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	avifIO avifIOCreateMemoryReader(Pointer data, NativeLong size);
+	/**
+	 * Returns NULL if the reader cannot be allocated.<br>
+	 * Original signature : <code>avifIO* avifIOCreateMemoryReader(const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1032</i>
+	 */
+	avifIO avifIOCreateMemoryReader(byte data[], NativeLong size);
+	/**
+	 * Returns NULL if the file cannot be opened or if the reader cannot be allocated.<br>
+	 * Original signature : <code>avifIO* avifIOCreateFileReader(const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1034</i><br>
+	 * @deprecated use the safer methods {@link #avifIOCreateFileReader(java.lang.String)} and {@link #avifIOCreateFileReader(com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	avifIO avifIOCreateFileReader(Pointer filename);
+	/**
+	 * Returns NULL if the file cannot be opened or if the reader cannot be allocated.<br>
+	 * Original signature : <code>avifIO* avifIOCreateFileReader(const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1034</i>
+	 */
+	avifIO avifIOCreateFileReader(String filename);
+	/**
+	 * Original signature : <code>void avifIODestroy(avifIO*)</code><br>
+	 * <i>native declaration : avif/avif.h:1035</i>
+	 */
+	void avifIODestroy(avifIO io);
+	/**
+	 * Original signature : <code>char* avifProgressiveStateToString(avifProgressiveState)</code><br>
+	 * <i>native declaration : avif/avif.h:1131</i>
+	 */
+	String avifProgressiveStateToString(int progressiveState);
+	/**
+	 * Returns NULL in case of memory allocation failure.<br>
+	 * Original signature : <code>avifDecoder* avifDecoderCreate()</code><br>
+	 * <i>native declaration : avif/avif.h:1275</i>
+	 */
+	avifDecoder avifDecoderCreate();
+	/**
+	 * Original signature : <code>void avifDecoderDestroy(avifDecoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1276</i>
+	 */
+	void avifDecoderDestroy(avifDecoder decoder);
+	/**
+	 * Simple interfaces to decode a single image, independent of the decoder afterwards (decoder may be destroyed).<br>
+	 * call avifDecoderSetIO*() first<br>
+	 * Original signature : <code>avifResult avifDecoderRead(avifDecoder*, avifImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:1279</i>
+	 */
+	int avifDecoderRead(avifDecoder decoder, avifImage image);
+	/**
+	 * Original signature : <code>avifResult avifDecoderReadMemory(avifDecoder*, avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1280</i><br>
+	 * @deprecated use the safer methods {@link #avifDecoderReadMemory(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, byte[], NativeLong)} and {@link #avifDecoderReadMemory(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifDecoderReadMemory(avifDecoder decoder, avifImage image, Pointer data, NativeLong size);
+	/**
+	 * Original signature : <code>avifResult avifDecoderReadMemory(avifDecoder*, avifImage*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1280</i>
+	 */
+	int avifDecoderReadMemory(avifDecoder decoder, avifImage image, byte data[], NativeLong size);
+	/**
+	 * Original signature : <code>avifResult avifDecoderReadFile(avifDecoder*, avifImage*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1281</i><br>
+	 * @deprecated use the safer methods {@link #avifDecoderReadFile(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, java.lang.String)} and {@link #avifDecoderReadFile(vavi.awt.image.jna.avif.avifDecoder, vavi.awt.image.jna.avif.avifImage, com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	int avifDecoderReadFile(avifDecoder decoder, avifImage image, Pointer filename);
+	/**
+	 * Original signature : <code>avifResult avifDecoderReadFile(avifDecoder*, avifImage*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1281</i>
+	 */
+	int avifDecoderReadFile(avifDecoder decoder, avifImage image, String filename);
+	/**
+	 * Parse again. Normally AVIF_DECODER_SOURCE_AUTO is enough for the common path.<br>
+	 * Original signature : <code>avifResult avifDecoderSetSource(avifDecoder*, avifDecoderSource)</code><br>
+	 * <i>native declaration : avif/avif.h:1305</i>
+	 */
+	int avifDecoderSetSource(avifDecoder decoder, int source);
+	/**
+	 * avifDecoderDestroy(decoder) has no effects on 'io'.<br>
+	 * Original signature : <code>void avifDecoderSetIO(avifDecoder*, avifIO*)</code><br>
+	 * <i>native declaration : avif/avif.h:1310</i>
+	 */
+	void avifDecoderSetIO(avifDecoder decoder, avifIO io);
+	/**
+	 * Original signature : <code>avifResult avifDecoderSetIOMemory(avifDecoder*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1311</i><br>
+	 * @deprecated use the safer methods {@link #avifDecoderSetIOMemory(vavi.awt.image.jna.avif.avifDecoder, byte[], NativeLong)} and {@link #avifDecoderSetIOMemory(vavi.awt.image.jna.avif.avifDecoder, com.sun.jna.Pointer, NativeLong)} instead
+	 */
+	@Deprecated 
+	int avifDecoderSetIOMemory(avifDecoder decoder, Pointer data, NativeLong size);
+	/**
+	 * Original signature : <code>avifResult avifDecoderSetIOMemory(avifDecoder*, const uint8_t*, size_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1311</i>
+	 */
+	int avifDecoderSetIOMemory(avifDecoder decoder, byte data[], NativeLong size);
+	/**
+	 * Original signature : <code>avifResult avifDecoderSetIOFile(avifDecoder*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1312</i><br>
+	 * @deprecated use the safer methods {@link #avifDecoderSetIOFile(vavi.awt.image.jna.avif.avifDecoder, java.lang.String)} and {@link #avifDecoderSetIOFile(vavi.awt.image.jna.avif.avifDecoder, com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	int avifDecoderSetIOFile(avifDecoder decoder, Pointer filename);
+	/**
+	 * Original signature : <code>avifResult avifDecoderSetIOFile(avifDecoder*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1312</i>
+	 */
+	int avifDecoderSetIOFile(avifDecoder decoder, String filename);
+	/**
+	 * Original signature : <code>avifResult avifDecoderParse(avifDecoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1313</i>
+	 */
+	int avifDecoderParse(avifDecoder decoder);
+	/**
+	 * Original signature : <code>avifResult avifDecoderNextImage(avifDecoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1314</i>
+	 */
+	int avifDecoderNextImage(avifDecoder decoder);
+	/**
+	 * Original signature : <code>avifResult avifDecoderNthImage(avifDecoder*, uint32_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1315</i>
+	 */
+	int avifDecoderNthImage(avifDecoder decoder, int frameIndex);
+	/**
+	 * Original signature : <code>avifResult avifDecoderReset(avifDecoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1316</i>
+	 */
+	int avifDecoderReset(avifDecoder decoder);
+	/**
+	 * These functions may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
+	 * Original signature : <code>avifBool avifDecoderIsKeyframe(const avifDecoder*, uint32_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1322</i>
+	 */
+	int avifDecoderIsKeyframe(avifDecoder decoder, int frameIndex);
+	/**
+	 * Original signature : <code>uint32_t avifDecoderNearestKeyframe(const avifDecoder*, uint32_t)</code><br>
+	 * <i>native declaration : avif/avif.h:1323</i>
+	 */
+	int avifDecoderNearestKeyframe(avifDecoder decoder, int frameIndex);
+	/**
+	 * This function may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
+	 * Original signature : <code>avifResult avifDecoderNthImageTiming(const avifDecoder*, uint32_t, avifImageTiming*)</code><br>
+	 * <i>native declaration : avif/avif.h:1327</i>
+	 */
+	int avifDecoderNthImageTiming(avifDecoder decoder, int frameIndex, avifImageTiming outTiming);
+	/**
+	 * WARNING: Experimental feature.<br>
+	 * Original signature : <code>uint32_t avifDecoderDecodedRowCount(const avifDecoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1343</i>
+	 */
+	int avifDecoderDecodedRowCount(avifDecoder decoder);
+	/**
+	 * This function may be used after a successful call (AVIF_RESULT_OK) to avifDecoderParse().<br>
+	 * Original signature : <code>avifResult avifDecoderNthImageMaxExtent(const avifDecoder*, uint32_t, avifExtent*)</code><br>
+	 * <i>native declaration : avif/avif.h:1369</i>
+	 */
+	int avifDecoderNthImageMaxExtent(avifDecoder decoder, int frameIndex, avifExtent outExtent);
+	/**
+	 * avifEncoderCreate() returns NULL if a memory allocation failed.<br>
+	 * Original signature : <code>avifEncoder* avifEncoderCreate()</code><br>
+	 * <i>native declaration : avif/avif.h:1459</i>
+	 */
+	avifEncoder avifEncoderCreate();
+	/**
+	 * Original signature : <code>avifResult avifEncoderWrite(avifEncoder*, const avifImage*, avifRWData*)</code><br>
+	 * <i>native declaration : avif/avif.h:1460</i>
+	 */
+	int avifEncoderWrite(avifEncoder encoder, avifImage image, avifRWData output);
+	/**
+	 * Original signature : <code>void avifEncoderDestroy(avifEncoder*)</code><br>
+	 * <i>native declaration : avif/avif.h:1461</i>
+	 */
+	void avifEncoderDestroy(avifEncoder encoder);
+	/**
+	 * or if we are encoding a layered image.<br>
+	 * Original signature : <code>avifResult avifEncoderAddImage(avifEncoder*, const avifImage*, uint64_t, avifAddImageFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:1502</i>
+	 */
+	int avifEncoderAddImage(avifEncoder encoder, avifImage image, long durationInTimescales, int addImageFlags);
+	/**
+	 * Original signature : <code>avifResult avifEncoderAddImageGrid(avifEncoder*, uint32_t, uint32_t, const const avifImage**, avifAddImageFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:1503</i><br>
+	 * @deprecated use the safer method {@link #avifEncoderAddImageGrid(vavi.awt.image.jna.avif.avifEncoder, int, int, vavi.awt.image.jna.avif.avifImage.ByReference[], int)} instead
+	 */
+	@Deprecated 
+	int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, PointerByReference cellImages, int addImageFlags);
+	/**
+	 * Original signature : <code>avifResult avifEncoderAddImageGrid(avifEncoder*, uint32_t, uint32_t, const const avifImage**, avifAddImageFlags)</code><br>
+	 * <i>native declaration : avif/avif.h:1503</i>
+	 */
+	int avifEncoderAddImageGrid(avifEncoder encoder, int gridCols, int gridRows, avifImage.ByReference cellImages[], int addImageFlags);
+	/**
+	 * Original signature : <code>avifResult avifEncoderFinish(avifEncoder*, avifRWData*)</code><br>
+	 * <i>native declaration : avif/avif.h:1508</i>
+	 */
+	int avifEncoderFinish(avifEncoder encoder, avifRWData output);
+	/**
+	 * AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION from avifEncoderWrite() or avifEncoderAddImage().<br>
+	 * Original signature : <code>avifResult avifEncoderSetCodecSpecificOption(avifEncoder*, const char*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1516</i><br>
+	 * @deprecated use the safer methods {@link #avifEncoderSetCodecSpecificOption(vavi.awt.image.jna.avif.avifEncoder, java.lang.String, java.lang.String)} and {@link #avifEncoderSetCodecSpecificOption(vavi.awt.image.jna.avif.avifEncoder, com.sun.jna.Pointer, com.sun.jna.Pointer)} instead
+	 */
+	@Deprecated 
+	int avifEncoderSetCodecSpecificOption(avifEncoder encoder, Pointer key, Pointer value);
+	/**
+	 * AVIF_RESULT_INVALID_CODEC_SPECIFIC_OPTION from avifEncoderWrite() or avifEncoderAddImage().<br>
+	 * Original signature : <code>avifResult avifEncoderSetCodecSpecificOption(avifEncoder*, const char*, const char*)</code><br>
+	 * <i>native declaration : avif/avif.h:1516</i>
+	 */
+	int avifEncoderSetCodecSpecificOption(avifEncoder encoder, String key, String value);
+	/**
+	 * Helpers<br>
+	 * Original signature : <code>avifBool avifImageUsesU16(const avifImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:1524</i>
+	 */
+	int avifImageUsesU16(avifImage image);
+	/**
+	 * Original signature : <code>avifBool avifImageIsOpaque(const avifImage*)</code><br>
+	 * <i>native declaration : avif/avif.h:1525</i>
+	 */
+	int avifImageIsOpaque(avifImage image);
+	/**
+	 * channel can be an avifChannelIndex.<br>
+	 * Original signature : <code>uint8_t* avifImagePlane(const avifImage*, int)</code><br>
+	 * <i>native declaration : avif/avif.h:1527</i>
+	 */
+	Pointer avifImagePlane(avifImage image, int channel);
+	/**
+	 * Original signature : <code>uint32_t avifImagePlaneRowBytes(const avifImage*, int)</code><br>
+	 * <i>native declaration : avif/avif.h:1528</i>
+	 */
+	int avifImagePlaneRowBytes(avifImage image, int channel);
+	/**
+	 * Original signature : <code>uint32_t avifImagePlaneWidth(const avifImage*, int)</code><br>
+	 * <i>native declaration : avif/avif.h:1529</i>
+	 */
+	int avifImagePlaneWidth(avifImage image, int channel);
+	/**
+	 * Original signature : <code>uint32_t avifImagePlaneHeight(const avifImage*, int)</code><br>
+	 * <i>native declaration : avif/avif.h:1530</i>
+	 */
+	int avifImagePlaneHeight(avifImage image, int channel);
+	/**
+	 * either the brand 'avif' or 'avis' (or both), without performing any allocations.<br>
+	 * Original signature : <code>avifBool avifPeekCompatibleFileType(const avifROData*)</code><br>
+	 * <i>native declaration : avif/avif.h:1534</i>
+	 */
+	int avifPeekCompatibleFileType(avifROData input);
+	class avifCodecSpecificOptions extends PointerType {
+		public avifCodecSpecificOptions(Pointer address) {
+			super(address);
+		}
+		public avifCodecSpecificOptions() {
+			super();
+		}
+	}
+	class avifDecoderData extends PointerType {
+		public avifDecoderData(Pointer address) {
+			super(address);
+		}
+		public avifDecoderData() {
+			super();
+		}
+	}
+	class avifEncoderData extends PointerType {
+		public avifEncoderData(Pointer address) {
+			super(address);
+		}
+		public avifEncoderData() {
+			super();
+		}
+	}
 }

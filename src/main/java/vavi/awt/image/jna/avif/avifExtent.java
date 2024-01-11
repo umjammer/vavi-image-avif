@@ -1,5 +1,6 @@
 package vavi.awt.image.jna.avif;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public class avifExtent extends Structure {
 	public long offset;
-	public int size;
+	public NativeLong size;
 	public avifExtent() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
+	protected List<String > getFieldOrder() {
 		return Arrays.asList("offset", "size");
 	}
-	public avifExtent(long offset, int size) {
+	public avifExtent(long offset, NativeLong size) {
 		super();
 		this.offset = offset;
 		this.size = size;

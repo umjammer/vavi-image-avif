@@ -1,4 +1,5 @@
 package vavi.awt.image.jna.avif;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.List;
 public class avifROData extends Structure {
 	/** C type : const uint8_t* */
 	public Pointer data;
-	public int size;
+	public NativeLong size;
 	public avifROData() {
 		super();
 	}
@@ -20,7 +21,7 @@ public class avifROData extends Structure {
 		return Arrays.asList("data", "size");
 	}
 	/** @param data C type : const uint8_t* */
-	public avifROData(Pointer data, int size) {
+	public avifROData(Pointer data, NativeLong size) {
 		super();
 		this.data = data;
 		this.size = size;
@@ -29,10 +30,8 @@ public class avifROData extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifROData implements Structure.ByReference {
-		
 	}
 
-    public static class ByValue extends avifROData implements Structure.ByValue {
-		
+	public static class ByValue extends avifROData implements Structure.ByValue {
 	}
 }

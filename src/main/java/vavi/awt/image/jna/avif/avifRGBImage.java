@@ -26,23 +26,23 @@ public class avifRGBImage extends Structure {
 	public int format;
 	/**
 	 * @see AvifLibrary.avifChromaUpsampling
-	 * Defaults to AVIF_CHROMA_UPSAMPLING_AUTOMATIC: How to upsample non-4:4:4 UV (ignored for 444) when converting to RGB.<br>
+	 * How to upsample from 4:2:0 or 4:2:2 UV when converting to RGB (ignored for 4:4:4 and 4:0:0).<br>
 	 * C type : avifChromaUpsampling
 	 */
 	public int chromaUpsampling;
 	/**
 	 * @see AvifLibrary.avifChromaDownsampling
-	 * How to downsample to 4:2:0 or 4:2:2 UV when converting from RGB (ignored for 4:4:4 and 4:0:0).
-	 * Ignored when converting to RGB. Defaults to AVIF_CHROMA_DOWNSAMPLING_AUTOMATIC.
+	 * How to downsample to 4:2:0 or 4:2:2 UV when converting from RGB (ignored for 4:4:4 and 4:0:0).<br>
+	 * C type : avifChromaDownsampling
 	 */
 	public int chromaDownsampling;
 	/**
-	 * If AVIF_FALSE and libyuv conversion between RGB and YUV (including upsampling or downsampling if any)
-	 * is available for the avifImage/avifRGBImage combination, then libyuv is used. Default is AVIF_FALSE.
+	 * If AVIF_FALSE and libyuv conversion between RGB and YUV (including upsampling or downsampling if any)<br>
+	 * C type : avifBool
 	 */
 	public int avoidLibYUV;
 	/**
-	 * Used for XRGB formats, treats formats containing alpha (such as ARGB) as if they were<br>
+	 * Used for XRGB formats, treats formats containing alpha (such as ARGB) as if they were RGB, treating<br>
 	 * C type : avifBool
 	 */
 	public int ignoreAlpha;
@@ -61,15 +61,15 @@ public class avifRGBImage extends Structure {
 	 * conversion. Setting this to zero has the same effect as setting it to one. Negative values are invalid.
 	 * Default: 1.
 	 */
-//	public int maxThreads;
+	public int maxThreads;
 	/** C type : uint8_t* */
 	public Pointer pixels;
 	public int rowBytes;
 	public avifRGBImage() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", /*"maxThreads", */"pixels", "rowBytes");
+	protected List<String > getFieldOrder() {
+		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "maxThreads", "pixels", "rowBytes");
 	}
 	public avifRGBImage(Pointer peer) {
 		super(peer);

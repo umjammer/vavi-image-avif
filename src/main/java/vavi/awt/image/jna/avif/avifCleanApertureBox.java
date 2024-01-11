@@ -39,10 +39,8 @@ public class avifCleanApertureBox extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifCleanApertureBox implements Structure.ByReference {
-		
 	}
 
     public static class ByValue extends avifCleanApertureBox implements Structure.ByValue {
-		
 	}
 }

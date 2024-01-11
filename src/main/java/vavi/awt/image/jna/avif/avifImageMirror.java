@@ -11,25 +11,23 @@ import java.util.List;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class avifImageMirror extends Structure {
-	public byte mode;
+	public byte axis;
 	public avifImageMirror() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
-		return Collections.singletonList("mode");
+	protected List<String > getFieldOrder() {
+		return Collections.singletonList("axis");
 	}
-	public avifImageMirror(byte mode) {
+	public avifImageMirror(byte axis) {
 		super();
-		this.mode = mode;
+		this.axis = axis;
 	}
 	public avifImageMirror(Pointer peer) {
 		super(peer);
 	}
 	public static class ByReference extends avifImageMirror implements Structure.ByReference {
-		
 	}
 
-    public static class ByValue extends avifImageMirror implements Structure.ByValue {
-		
+	public static class ByValue extends avifImageMirror implements Structure.ByValue {
 	}
 }

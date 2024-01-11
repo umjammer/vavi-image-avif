@@ -45,10 +45,8 @@ public class avifImageTiming extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifImageTiming implements Structure.ByReference {
-		
 	}
 
     public static class ByValue extends avifImageTiming implements Structure.ByValue {
-		
 	}
 }

@@ -28,10 +28,8 @@ public class avifImageRotation extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifImageRotation implements Structure.ByReference {
-		
 	}
 
     public static class ByValue extends avifImageRotation implements Structure.ByValue {
-		
 	}
 }

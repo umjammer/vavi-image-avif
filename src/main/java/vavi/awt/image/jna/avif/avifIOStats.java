@@ -1,4 +1,5 @@
 package vavi.awt.image.jna.avif;
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import java.util.Arrays;
@@ -10,15 +11,15 @@ import java.util.List;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class avifIOStats extends Structure {
-	public int colorOBUSize;
-	public int alphaOBUSize;
+	public NativeLong colorOBUSize;
+	public NativeLong alphaOBUSize;
 	public avifIOStats() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
+	protected List<String > getFieldOrder() {
 		return Arrays.asList("colorOBUSize", "alphaOBUSize");
 	}
-	public avifIOStats(int colorOBUSize, int alphaOBUSize) {
+	public avifIOStats(NativeLong colorOBUSize, NativeLong alphaOBUSize) {
 		super();
 		this.colorOBUSize = colorOBUSize;
 		this.alphaOBUSize = alphaOBUSize;
@@ -27,10 +28,8 @@ public class avifIOStats extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifIOStats implements Structure.ByReference {
-		
 	}
 
-    public static class ByValue extends avifIOStats implements Structure.ByValue {
-		
+	public static class ByValue extends avifIOStats implements Structure.ByValue {
 	}
 }
