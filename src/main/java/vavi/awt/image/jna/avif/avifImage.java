@@ -52,6 +52,8 @@ public class avifImage extends Structure {
 	public short transferCharacteristics;
 	/** C type : avifMatrixCoefficients */
 	public short matrixCoefficients;
+	/** C type : avifContentLightLevelInformationBox */
+	public avifContentLightLevelInformationBox clli;
 	/** C type : avifTransformFlags */
 	public int transformFlags;
 	/** C type : avifPixelAspectRatioBox */
@@ -69,8 +71,8 @@ public class avifImage extends Structure {
 	public avifImage() {
 		super();
 	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp");
+	protected List<String > getFieldOrder() {
+		return Arrays.asList("width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "clli", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp");
 	}
 	public avifImage(Pointer peer) {
 		super(peer);

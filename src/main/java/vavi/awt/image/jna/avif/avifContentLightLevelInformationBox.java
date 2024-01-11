@@ -9,30 +9,25 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class avifCropRect extends Structure {
-	public int x;
-	public int y;
-	public int width;
-	public int height;
-	public avifCropRect() {
+public class avifContentLightLevelInformationBox extends Structure {
+	public short maxCLL;
+	public short maxPALL;
+	public avifContentLightLevelInformationBox() {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("x", "y", "width", "height");
+		return Arrays.asList("maxCLL", "maxPALL");
 	}
-	public avifCropRect(int x, int y, int width, int height) {
+	public avifContentLightLevelInformationBox(short maxCLL, short maxPALL) {
 		super();
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.maxCLL = maxCLL;
+		this.maxPALL = maxPALL;
 	}
-	public avifCropRect(Pointer peer) {
+	public avifContentLightLevelInformationBox(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends avifCropRect implements Structure.ByReference {
+	public static class ByReference extends avifContentLightLevelInformationBox implements Structure.ByReference {
 	}
-
-    public static class ByValue extends avifCropRect implements Structure.ByValue {
+	public static class ByValue extends avifContentLightLevelInformationBox implements Structure.ByValue {
 	}
 }

@@ -9,30 +9,25 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
-public class avifCropRect extends Structure {
-	public int x;
-	public int y;
-	public int width;
-	public int height;
-	public avifCropRect() {
+public class avifFraction extends Structure {
+	public int n;
+	public int d;
+	public avifFraction() {
 		super();
 	}
 	protected List<String> getFieldOrder() {
-		return Arrays.asList("x", "y", "width", "height");
+		return Arrays.asList("n", "d");
 	}
-	public avifCropRect(int x, int y, int width, int height) {
+	public avifFraction(int n, int d) {
 		super();
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.n = n;
+		this.d = d;
 	}
-	public avifCropRect(Pointer peer) {
+	public avifFraction(Pointer peer) {
 		super(peer);
 	}
-	public static class ByReference extends avifCropRect implements Structure.ByReference {
+	public static class ByReference extends avifFraction implements Structure.ByReference {
 	}
-
-    public static class ByValue extends avifCropRect implements Structure.ByValue {
+	public static class ByValue extends avifFraction implements Structure.ByValue {
 	}
 }
