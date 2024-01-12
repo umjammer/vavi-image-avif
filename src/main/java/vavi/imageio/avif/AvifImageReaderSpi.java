@@ -82,8 +82,7 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
     @Override
     public boolean canDecodeInput(Object obj) throws IOException {
 Debug.println(Level.FINE, "input: " + obj);
-        if (obj instanceof ImageInputStream) {
-            ImageInputStream stream = (ImageInputStream) obj;
+        if (obj instanceof ImageInputStream stream) {
             stream.mark();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] b = new byte[8192];

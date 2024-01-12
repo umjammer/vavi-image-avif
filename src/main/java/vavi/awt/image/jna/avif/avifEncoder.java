@@ -61,7 +61,7 @@ public class avifEncoder extends Structure {
 	public avifEncoder() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("codecChoice", "maxThreads", "speed", "keyframeInterval", "timescale", "repetitionCount", "extraLayerCount", "quality", "qualityAlpha", "minQuantizer", "maxQuantizer", "minQuantizerAlpha", "maxQuantizerAlpha", "tileRowsLog2", "tileColsLog2", "autoTiling", "scalingMode", "ioStats", "diag", "data", "csOptions", "headerFormat");
 	}
 	public avifEncoder(Pointer peer) {

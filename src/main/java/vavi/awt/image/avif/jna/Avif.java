@@ -19,7 +19,6 @@ import vavi.awt.image.jna.avif.avifRGBImage;
 import vavi.awt.image.jna.avif.avifROData;
 import vavi.awt.image.jna.avif.avifRWData;
 import vavi.util.Debug;
-import vavi.util.StringUtil;
 
 
 /**

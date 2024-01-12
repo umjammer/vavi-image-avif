@@ -68,7 +68,7 @@ public class avifRGBImage extends Structure {
 	public avifRGBImage() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "maxThreads", "pixels", "rowBytes");
 	}
 	public avifRGBImage(Pointer peer) {
