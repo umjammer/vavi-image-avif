@@ -39,7 +39,7 @@ Debug.println(Level.FINE, version);
         ComparableVersion allowed = new ComparableVersion("1.0.3");
 
         if (current.compareTo(allowed) < 0) {
-            Debug.println(Level.WARNING, "not targeted libavif version: " + version);
+            throw new IllegalStateException("not targeted libavif version: " + version);
         }
     }
 
