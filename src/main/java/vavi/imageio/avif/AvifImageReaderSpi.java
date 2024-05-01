@@ -8,8 +8,10 @@ package vavi.imageio.avif;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.logging.Level;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
@@ -27,8 +29,24 @@ import vavi.util.Debug;
  */
 public class AvifImageReaderSpi extends ImageReaderSpi {
 
+    static {
+        try {
+            try (InputStream is = AvifImageReaderSpi.class.getResourceAsStream("/META-INF/maven/vavi/vavi-image-avif/pom.properties")) {
+                if (is != null) {
+                    Properties props = new Properties();
+                    props.load(is);
+                    Version = props.getProperty("version", "undefined in pom.properties");
+                } else {
+                    Version = System.getProperty("vavi.test.version", "undefined");
+                }
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private static final String VendorName = "https://github.com/umjammer/vavi-image-avif";
-    private static final String Version = "0.0.4";
+    private static final String Version;
     private static final String ReaderClassName =
         "vavi.imageio.avif.AvifImageReader";
     private static final String[] Names = {
