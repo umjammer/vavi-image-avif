@@ -79,7 +79,7 @@
           <argLine>
             --add-opens java.logging/java.util.logging=ALL-UNNAMED
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-            -Djna.library.path=${native.prefix}/lib
+            -Djna.library.path=@{native.prefix}/lib
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
