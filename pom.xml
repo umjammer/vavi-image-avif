@@ -18,9 +18,23 @@
 
   <properties>
     <jnaerator.version>0.12</jnaerator.version>
+    <native.prefix>/usr/local</native.prefix>
   </properties>
 
   <profiles>
+    <profile>
+      <id>mac arm64</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>aarch64</arch>
+        </os>
+      </activation>
+      <properties>
+        <native.prefix>/opt/homebrew</native.prefix>
+      </properties>
+    </profile>
+
     <profile>
       <!-- mvn -P jnaerator jnaerator:generate -->
       <id>jnaerator</id>
@@ -60,12 +74,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.2</version>
         <configuration>
           <argLine>
             --add-opens java.logging/java.util.logging=ALL-UNNAMED
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-            -Djna.library.path=/usr/local/lib:/opt/homebrew/lib
+            -Djna.library.path=${native.prefix}/lib
           </argLine>
           <trimStackTrace>false</trimStackTrace>
         </configuration>
@@ -78,7 +92,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.10.0</version>
+        <version>5.10.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -96,7 +110,7 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.1.9</version>
+      <version>1.1.12</version>
     </dependency>
     <dependency>
       <groupId>com.github.umjammer</groupId>
