@@ -17,7 +17,7 @@ public class avifScalingMode extends Structure {
 	public avifScalingMode() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("horizontal", "vertical");
 	}
 	/**
@@ -33,7 +33,8 @@ public class avifScalingMode extends Structure {
 		super(peer);
 	}
 	public static class ByReference extends avifScalingMode implements Structure.ByReference {
-	};
-	public static class ByValue extends avifScalingMode implements Structure.ByValue {
-	};
+	}
+
+    public static class ByValue extends avifScalingMode implements Structure.ByValue {
+	}
 }

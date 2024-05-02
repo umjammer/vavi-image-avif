@@ -7,23 +7,18 @@
 package vavi.imageio.avif;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
-import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageWriterSpi;
-import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 
 import vavi.awt.image.avif.jna.Avif;
-import vavi.imageio.WrappedImageInputStream;
 import vavi.util.Debug;
 
 

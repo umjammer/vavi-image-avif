@@ -17,7 +17,7 @@ public class avifRWData extends Structure {
 	public avifRWData() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("data", "size");
 	}
 	/** @param data C type : uint8_t* */

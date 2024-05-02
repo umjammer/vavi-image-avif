@@ -1,7 +1,7 @@
 package vavi.awt.image.jna.avif;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.List;
 /**
@@ -15,7 +15,7 @@ public class avifImageMirror extends Structure {
 	public avifImageMirror() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Collections.singletonList("axis");
 	}
 	public avifImageMirror(byte axis) {

@@ -18,7 +18,7 @@ public class avifExtent extends Structure {
 	public avifExtent() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("offset", "size");
 	}
 	public avifExtent(long offset, NativeLong size) {

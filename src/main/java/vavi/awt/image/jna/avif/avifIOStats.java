@@ -16,7 +16,7 @@ public class avifIOStats extends Structure {
 	public avifIOStats() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("colorOBUSize", "alphaOBUSize");
 	}
 	public avifIOStats(NativeLong colorOBUSize, NativeLong alphaOBUSize) {

@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import vavi.awt.image.jna.avif.AvifLibrary;
 import vavi.awt.image.jna.avif.avifDecoder;
 import vavi.awt.image.jna.avif.avifEncoder;
@@ -19,7 +20,6 @@ import vavi.awt.image.jna.avif.avifRGBImage;
 import vavi.awt.image.jna.avif.avifROData;
 import vavi.awt.image.jna.avif.avifRWData;
 import vavi.util.Debug;
-import vavi.util.StringUtil;
 
 
 /**
@@ -34,8 +34,12 @@ public class Avif {
     // This is a utility class and cannot be instantiated.
     private Avif() {
         String version = AvifLibrary.INSTANCE.avifVersion();
-        if (!version.startsWith("1.0.3")) {
-            Debug.println(Level.SEVERE, "wrong version: " + version);
+Debug.println(Level.FINE, version);
+        ComparableVersion current = new ComparableVersion(version);
+        ComparableVersion allowed = new ComparableVersion("1.0.3");
+
+        if (current.compareTo(allowed) < 0) {
+            throw new IllegalStateException("not targeted libavif version: " + version);
         }
     }
 

@@ -77,7 +77,7 @@ public class avifDecoder extends Structure {
 	public avifDecoder() {
 		super();
 	}
-	protected List<String > getFieldOrder() {
+	protected List<String> getFieldOrder() {
 		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "repetitionCount", "alphaPresent", "ioStats", "diag", "io", "data", "imageSequenceTrackPresent");
 	}
 	public avifDecoder(Pointer peer) {
