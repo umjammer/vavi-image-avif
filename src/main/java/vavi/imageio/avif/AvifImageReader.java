@@ -10,11 +10,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -25,7 +26,8 @@ import javax.imageio.stream.ImageInputStream;
 
 import vavi.awt.image.avif.jna.Avif;
 import vavi.imageio.WrappedImageInputStream;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -35,6 +37,8 @@ import vavi.util.Debug;
  * @version 0.00 2022-09-07 umjammer initial version <br>
  */
 public class AvifImageReader extends ImageReader {
+
+    private static final Logger logger = getLogger(AvifImageReader.class.getName());
 
     /** */
     private BufferedImage image;
@@ -72,7 +76,7 @@ public class AvifImageReader extends ImageReader {
     public BufferedImage read(int imageIndex, ImageReadParam param)
         throws IIOException {
 
-Debug.println(Level.FINE, "decode start");
+logger.log(Level.DEBUG,"decode start");
 long t = System.currentTimeMillis();
         InputStream stream = new WrappedImageInputStream((ImageInputStream) input);
 
@@ -85,7 +89,7 @@ long t = System.currentTimeMillis();
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-Debug.println(Level.FINE, "size: " + l);
+logger.log(Level.DEBUG,"size: {0} bytes", l);
             ByteBuffer bb = ByteBuffer.allocateDirect(l);
             bb.put(baos.toByteArray(), 0, l);
 
@@ -96,7 +100,7 @@ Debug.println(Level.FINE, "size: " + l);
         } catch (IOException e) {
             throw new IIOException(e.getMessage(), e);
 } finally {
-Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
+logger.log(Level.DEBUG,"time: {0} ms", System.currentTimeMillis() - t);
         }
     }
 
