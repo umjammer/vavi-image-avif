@@ -18,12 +18,11 @@
 
   <properties>
     <jnaerator.version>0.12</jnaerator.version>
-    <native.prefix>/usr/local</native.prefix>
   </properties>
 
   <profiles>
     <profile>
-      <id>mac arm64</id>
+      <id>arm64</id>
       <activation>
         <os>
           <family>mac</family>
@@ -32,6 +31,17 @@
       </activation>
       <properties>
         <native.prefix>/opt/homebrew</native.prefix>
+      </properties>
+    </profile>
+    <profile>
+      <id>x86_64</id>
+      <activation>
+        <os>
+          <arch>x86_64</arch>
+        </os>
+      </activation>
+      <properties>
+        <native.prefix>/usr/local</native.prefix>
       </properties>
     </profile>
 
@@ -65,7 +75,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.12.1</version>
         <configuration>
           <release>17</release>
         </configuration>
@@ -74,7 +84,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.5</version>
         <configuration>
           <argLine>
             --add-opens java.logging/java.util.logging=ALL-UNNAMED
@@ -92,7 +102,7 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.10.2</version>
+        <version>5.10.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -110,7 +120,7 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-image</artifactId>
-      <version>1.0.11</version>
+      <version>1.0.12</version>
     </dependency>
     <dependency>
       <groupId>net.java.dev.jna</groupId>
@@ -121,7 +131,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-      <version>3.9.6</version>
+      <version>3.9.9</version>
     </dependency>
 
     <dependency>
@@ -143,7 +153,7 @@
     <dependency>
       <groupId>com.github.umjammer</groupId>
       <artifactId>vavi-commons</artifactId>
-      <version>1.1.12</version>
+      <version>1.1.14</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
