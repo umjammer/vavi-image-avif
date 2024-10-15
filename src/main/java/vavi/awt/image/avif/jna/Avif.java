@@ -5,8 +5,9 @@ package vavi.awt.image.avif.jna;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
@@ -19,7 +20,8 @@ import vavi.awt.image.jna.avif.avifImage;
 import vavi.awt.image.jna.avif.avifRGBImage;
 import vavi.awt.image.jna.avif.avifROData;
 import vavi.awt.image.jna.avif.avifRWData;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -29,12 +31,14 @@ import vavi.util.Debug;
  */
 public class Avif {
 
+    private static final Logger logger = getLogger(Avif.class.getName());
+
     private static final Avif avif = new Avif();
 
     // This is a utility class and cannot be instantiated.
     private Avif() {
         String version = AvifLibrary.INSTANCE.avifVersion();
-Debug.println(Level.FINE, version);
+logger.log(Level.DEBUG, "libavif version: " + version);
         ComparableVersion current = new ComparableVersion(version);
         ComparableVersion allowed = new ComparableVersion("1.0.3");
 
@@ -71,7 +75,7 @@ Debug.println(Level.FINE, version);
         Pointer buffer = Native.getDirectBufferPointer(encoded);
         avifDecoder decoder = createDecoderAndParse(buffer, length, Runtime.getRuntime().availableProcessors());
         BufferedImage image = new BufferedImage(decoder.image.width, decoder.image.height, BufferedImage.TYPE_4BYTE_ABGR);
-Debug.println(Level.FINER, "image depth: " + decoder.image.depth);
+logger.log(Level.TRACE,"image depth: " + decoder.image.depth);
         return image;
     }
 
@@ -149,7 +153,7 @@ Debug.println(Level.FINER, "image depth: " + decoder.image.depth);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
             throw new IllegalStateException(String.format("Failed to convert YUV Pixels to RGB. Status: %d", res));
         }
-        // cause nativeBuffer doesn't have array()
+        // because nativeBuffer doesn't have array()
         ByteBuffer localBuffer = ByteBuffer.allocate(nativeBuffer.capacity());
         localBuffer.put(nativeBuffer);
         bitmap.getRaster().setDataElements(0, 0, bitmap.getWidth(), bitmap.getHeight(), localBuffer.array());
@@ -159,7 +163,7 @@ Debug.println(Level.FINER, "image depth: " + decoder.image.depth);
 
     /** Encodes the java image into the AVIF image. */
     public ByteBuffer encode(BufferedImage bitmap, int quality) {
-Debug.println(Level.FINE, "depth: " + bitmap.getColorModel().getPixelSize() / bitmap.getColorModel().getNumComponents());
+logger.log(Level.DEBUG,"depth: " + bitmap.getColorModel().getPixelSize() / bitmap.getColorModel().getNumComponents());
         avifImage image = AvifLibrary.INSTANCE.avifImageCreate(bitmap.getWidth(), bitmap.getHeight(), bitmap.getColorModel().getPixelSize() / bitmap.getColorModel().getNumComponents(), AvifLibrary.avifPixelFormat.AVIF_PIXEL_FORMAT_YUV444); // these values dictate what goes into the final AVIF
         if (image == null) {
             throw new OutOfMemoryError("avifImageCreate");
@@ -176,7 +180,7 @@ Debug.println(Level.FINE, "depth: " + bitmap.getColorModel().getPixelSize() / bi
         // * transforms (transformFlags, pasp, clap, irot, imir)
 
         // If you have RGB(A) data you want to encode, use this path
-Debug.printf(Level.FINE, "Encoding from converted RGBA");
+logger.log(Level.DEBUG,"Encoding from converted RGBA");
 
         if (bitmap.getType() != BufferedImage.TYPE_4BYTE_ABGR) {
             throw new IllegalStateException(String.format("Bitmap format (%d) is not supported.", bitmap.getType()));
@@ -192,7 +196,7 @@ Debug.printf(Level.FINE, "Encoding from converted RGBA");
 //        ByteBuffer nativeBuffer = ByteBuffer.allocateDirect(bitmap.getWidth() * bitmap.getHeight() * bytes);
 //        rgb.pixels = Native.getDirectBufferPointer(nativeBuffer);
 //        rgb.rowBytes = bitmap.getWidth() * bytes;
-//Debug.printf(Level.FINE, StringUtil.paramString(rgb)); // TODO paramString doesn't work jdk16+
+//logger.log(Level.DEBUG, StringUtil.paramString(rgb)); // TODO paramString doesn't work jdk16+
 
         nativeBuffer.put(((DataBufferByte) bitmap.getRaster().getDataBuffer()).getData());
 
@@ -232,7 +236,7 @@ Debug.printf(Level.FINE, "Encoding from converted RGBA");
             throw new IllegalStateException(String.format("Failed to finish encode: %s", AvifLibrary.INSTANCE.avifResultToString(finishResult)));
         }
 
-Debug.printf(Level.FINE, "Encode success: %d total bytes", avifOutput.size.longValue());
+logger.log(Level.DEBUG, "Encode success: {0} total bytes", avifOutput.size.longValue());
 
         AvifLibrary.INSTANCE.avifRGBImageFreePixels(rgb);
         AvifLibrary.INSTANCE.avifEncoderDestroy(encoder);

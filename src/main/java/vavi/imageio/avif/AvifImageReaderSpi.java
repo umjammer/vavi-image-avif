@@ -9,16 +9,18 @@ package vavi.imageio.avif;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.logging.Level;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
 import vavi.awt.image.avif.jna.Avif;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -28,6 +30,8 @@ import vavi.util.Debug;
  * @version 0.00 2022-09-07 umjammer initial version <br>
  */
 public class AvifImageReaderSpi extends ImageReaderSpi {
+
+    private static final Logger logger = getLogger(AvifImageReaderSpi.class.getName());
 
     static {
         try {
@@ -99,7 +103,7 @@ public class AvifImageReaderSpi extends ImageReaderSpi {
 
     @Override
     public boolean canDecodeInput(Object obj) throws IOException {
-Debug.println(Level.FINE, "input: " + obj);
+logger.log(Level.DEBUG,"input: " + obj);
         if (obj instanceof ImageInputStream stream) {
             stream.mark();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -110,7 +114,7 @@ Debug.println(Level.FINE, "input: " + obj);
                 baos.write(b, 0, r);
             }
             int l = baos.size();
-Debug.println(Level.FINE, "size: " + l);
+logger.log(Level.DEBUG,"size: " + l);
             ByteBuffer bb = ByteBuffer.allocateDirect(l);
             bb.put(baos.toByteArray(), 0, l);
             stream.reset();

@@ -8,8 +8,9 @@ package vavi.imageio.avif;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
@@ -19,7 +20,8 @@ import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
 
 import vavi.awt.image.avif.jna.Avif;
-import vavi.util.Debug;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -29,6 +31,8 @@ import vavi.util.Debug;
  * @version 0.00 2023-05-28 nsano initial version <br>
  */
 public class AvifImageWriter extends ImageWriter {
+
+    private static final Logger logger = getLogger(AvifImageWriter.class.getName());
 
     /**
      * Constructs an <code>ImageWriter</code> and sets its
@@ -80,7 +84,7 @@ long t = System.currentTimeMillis();
             ios.write(bb.array());
             ios.flush();
         } finally {
-Debug.println(Level.FINE, "time: " + (System.currentTimeMillis() - t));
+logger.log(Level.DEBUG,"time: " + (System.currentTimeMillis() - t));
         }
     }
 }
