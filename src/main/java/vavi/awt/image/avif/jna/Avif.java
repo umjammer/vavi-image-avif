@@ -38,7 +38,7 @@ public class Avif {
     // This is a utility class and cannot be instantiated.
     private Avif() {
         String version = AvifLibrary.INSTANCE.avifVersion();
-logger.log(Level.DEBUG,version);
+logger.log(Level.DEBUG, "libavif version: " + version);
         ComparableVersion current = new ComparableVersion(version);
         ComparableVersion allowed = new ComparableVersion("1.0.3");
 
@@ -153,7 +153,7 @@ logger.log(Level.TRACE,"image depth: " + decoder.image.depth);
         if (res != AvifLibrary.avifResult.AVIF_RESULT_OK) {
             throw new IllegalStateException(String.format("Failed to convert YUV Pixels to RGB. Status: %d", res));
         }
-        // cause nativeBuffer doesn't have array()
+        // because nativeBuffer doesn't have array()
         ByteBuffer localBuffer = ByteBuffer.allocate(nativeBuffer.capacity());
         localBuffer.put(nativeBuffer);
         bitmap.getRaster().setDataElements(0, 0, bitmap.getWidth(), bitmap.getHeight(), localBuffer.array());
