@@ -2,9 +2,10 @@ package vavi.awt.image.jna.avif;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import java.util.Arrays;
-import java.util.List;
+import com.sun.jna.Structure.FieldOrder;
+
 import vavi.awt.image.jna.avif.AvifLibrary.avifDecoderData;
+
 
 /**
  * <i>native declaration : avif/avif.h</i><br>
@@ -12,6 +13,7 @@ import vavi.awt.image.jna.avif.AvifLibrary.avifDecoderData;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
+@FieldOrder({"codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "repetitionCount", "alphaPresent", "ioStats", "diag", "io", "data", "imageSequenceTrackPresent"})
 public class avifDecoder extends Structure {
 	/**
 	 * @see AvifLibrary.avifCodecChoice
@@ -76,9 +78,6 @@ public class avifDecoder extends Structure {
 	public int imageSequenceTrackPresent;
 	public avifDecoder() {
 		super();
-	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("codecChoice", "maxThreads", "requestedSource", "allowProgressive", "allowIncremental", "ignoreExif", "ignoreXMP", "imageSizeLimit", "imageDimensionLimit", "imageCountLimit", "strictFlags", "image", "imageIndex", "imageCount", "progressiveState", "imageTiming", "timescale", "duration", "durationInTimescales", "repetitionCount", "alphaPresent", "ioStats", "diag", "io", "data", "imageSequenceTrackPresent");
 	}
 	public avifDecoder(Pointer peer) {
 		super(peer);

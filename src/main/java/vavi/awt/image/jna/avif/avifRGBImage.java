@@ -2,8 +2,8 @@ package vavi.awt.image.jna.avif;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import java.util.Arrays;
-import java.util.List;
+import com.sun.jna.Structure.FieldOrder;
+
 
 /**
  * <i>native declaration : avif/avif.h</i><br>
@@ -11,6 +11,7 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
+@FieldOrder({"width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "maxThreads", "pixels", "rowBytes"})
 public class avifRGBImage extends Structure {
 	/** must match associated avifImage */
 	public int width;
@@ -67,9 +68,6 @@ public class avifRGBImage extends Structure {
 	public int rowBytes;
 	public avifRGBImage() {
 		super();
-	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "format", "chromaUpsampling", "chromaDownsampling", "avoidLibYUV", "ignoreAlpha", "alphaPremultiplied", "isFloat", "maxThreads", "pixels", "rowBytes");
 	}
 	public avifRGBImage(Pointer peer) {
 		super(peer);
