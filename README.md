@@ -9,7 +9,7 @@
 Java AVIF decoder and encoder<br/>
 wrapped [libavif](https://github.com/AOMediaCodec/libavif) by jna<br/>
 
-<img alt="avif logo" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Avif-logo-rgb.svg" width="200"/><sub>© <a href="https://aomedia.org/av1/">AOM</a></sub>
+<img alt="avif logo" src="src/test/resources/duke_avif.png" width="160" />
 
 ## Install
 
@@ -20,10 +20,10 @@ wrapped [libavif](https://github.com/AOMediaCodec/libavif) by jna<br/>
 ## Usage
 
 ```java
-    // read
-    BufferedImage image = ImageIO.read(Paths.get("/foo/bar.avif").toFile());
-    // write
-    ImageIO.write(image, "AVIF", Paths.get("/foo/baz.avif").toFile());
+// read
+BufferedImage image = ImageIO.read(Paths.get("/foo/bar.avif").toFile());
+// write
+ImageIO.write(image, "AVIF", Paths.get("/foo/baz.avif").toFile());
 ```
 
 ## References
@@ -33,3 +33,8 @@ wrapped [libavif](https://github.com/AOMediaCodec/libavif) by jna<br/>
 ## TODO
 
  * ~~writer~~
+ * av2
+
+---
+
+<sub>image designed by @umjammer, drawn by nano banana</sub>
