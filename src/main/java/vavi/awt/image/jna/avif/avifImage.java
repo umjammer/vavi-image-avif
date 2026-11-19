@@ -2,6 +2,7 @@ package vavi.awt.image.jna.avif;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import com.sun.jna.Structure.FieldOrder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * a tool written by <a href="http://ochafik.com/">Olivier Chafik</a> that <a href="http://code.google.com/p/jnaerator/wiki/CreditsAndLicense">uses a few opensource projects.</a>.<br>
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
+@FieldOrder({"width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "clli", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp"})
 public class avifImage extends Structure {
 	public int width;
 	public int height;
@@ -70,9 +72,6 @@ public class avifImage extends Structure {
 	public avifRWData xmp;
 	public avifImage() {
 		super();
-	}
-	protected List<String> getFieldOrder() {
-		return Arrays.asList("width", "height", "depth", "yuvFormat", "yuvRange", "yuvChromaSamplePosition", "yuvPlanes", "yuvRowBytes", "imageOwnsYUVPlanes", "alphaPlane", "alphaRowBytes", "imageOwnsAlphaPlane", "alphaPremultiplied", "icc", "colorPrimaries", "transferCharacteristics", "matrixCoefficients", "clli", "transformFlags", "pasp", "clap", "irot", "imir", "exif", "xmp");
 	}
 	public avifImage(Pointer peer) {
 		super(peer);

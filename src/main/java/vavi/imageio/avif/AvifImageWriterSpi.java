@@ -27,7 +27,7 @@ public class AvifImageWriterSpi extends ImageWriterSpi {
 
     static {
         try {
-            try (InputStream is = AvifImageReaderSpi.class.getResourceAsStream("/META-INF/maven/vavi/vavi-image-avif/pom.properties")) {
+            try (InputStream is = AvifImageWriterSpi.class.getResourceAsStream("/META-INF/maven/vavi/vavi-image-avif/pom.properties")) {
                 if (is != null) {
                     Properties props = new Properties();
                     props.load(is);

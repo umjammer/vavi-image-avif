@@ -43,13 +43,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
- * Test1.
+ * TestCase.
  *
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (nsano)
  * @version 0.00 2022-09-07 nsano initial version <br>
  */
 @PropsEntity(url = "file:local.properties")
-class Test1 {
+class TestCase {
 
     static boolean localPropertiesExists() {
         return Files.exists(Paths.get("local.properties"));
@@ -121,7 +121,7 @@ Debug.printf("image: %dx%d%n", image.getWidth(), image.getHeight());
             @Override public void windowClosing(WindowEvent e) { cdl.countDown(); }
         });
         JPanel panel = new JPanel() {
-            public void paintComponent(Graphics g) {
+            @Override public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
             }
         };
@@ -177,6 +177,7 @@ for (String w : ws) {
     }
 
     @Test
+    @DisplayName("test all in zip")
     @EnabledIfSystemProperty(named = "vavi.test", matches = "ide")
     void test3() throws Exception {
         Path p = Paths.get(zip);
